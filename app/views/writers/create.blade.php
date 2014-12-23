@@ -1,0 +1,1 @@
+/vagrant/public/laravel4/app/views/writers/create.blade.php
