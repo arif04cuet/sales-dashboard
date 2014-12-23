@@ -6,7 +6,12 @@
     "type": "project",
     "require": {
         "laravel/framework": "4.2.*",
-        "mrjuliuss/syntara": "1.2.*"
+        "mrjuliuss/syntara": "1.2.*",
+        "chumper/datatable": "2.*"
+    },
+    "require-dev": {
+        "way/generators": "~2.6",
+        "barryvdh/laravel-ide-helper": "~1.11"
     },
     "autoload": {
         "classmap": [
@@ -21,6 +26,7 @@
     "scripts": {
         "post-install-cmd": [
             "php artisan clear-compiled",
+            "php artisan ide-helper:generate",
             "php artisan optimize"
         ],
         "post-update-cmd": [
