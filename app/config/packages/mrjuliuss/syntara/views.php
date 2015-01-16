@@ -1,10 +1,10 @@
-<?php 
+<?php
 
 return array(
     // layouts
-    'master' => 'syntara::layouts.dashboard.master',
-    'header' => 'syntara::layouts.dashboard.header',
-    'permissions-select' => 'syntara::layouts.dashboard.permissions-select',
+    'master' => 'layouts.dashboard.master',
+    'header' => 'layouts.dashboard.header',
+    'permissions-select' => 'layouts.dashboard.permissions-select',
 
     // dashboard
     'dashboard-index' => 'syntara::dashboard.index',

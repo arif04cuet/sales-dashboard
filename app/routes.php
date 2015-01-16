@@ -11,4 +11,19 @@
 |
 */
 
-Route::get('/', 'HomeController@showWelcome');
+Route::get('/', function () {
+    return Redirect::to(Config::get('syntara::config.uri'));
+});
+Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::config.uri')), function () {
+    Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
+    Route::resource('orders', 'OrdersController');
+
+});
+Route::get('/test', function()
+{
+    $a = [1, 2, 3, 4, 5];
+
+    array_pop($a);
+
+    return View::make('home.test');
+});
