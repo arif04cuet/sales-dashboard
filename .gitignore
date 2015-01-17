@@ -1,4 +1,7 @@
 /bootstrap/compiled.php
+/bootstrap/start.php
+/app/config/local
+/public/bower_components
 /vendor
 composer.phar
 composer.lock
@@ -7,4 +10,5 @@ composer.lock
 .DS_Store
 Thumbs.db
 
-public/bower_components
+
+.idea
