@@ -97,6 +97,7 @@ class OrdersController extends BaseController
 
     public function datatable()
     {
+        $columns = Order::getOrdersColumn();
         return Datatable::collection(User::all(array('id', 'email')))
             ->showColumns('id', 'email')
             ->searchColumns('email')

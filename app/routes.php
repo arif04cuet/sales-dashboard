@@ -18,7 +18,7 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
     Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
     Route::resource('orders', 'OrdersController');
     //for QC
-    Route::get('qc/datatable', array('as' => 'qc.datatable', 'uses' => 'OrdersController@datatable'));
+    Route::get('qc/datatable', array('as' => 'qc.datatable', 'uses' => 'QcsController@datatable'));
     Route::resource('qc', 'QcsController');
 
 });

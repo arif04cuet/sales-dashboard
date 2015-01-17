@@ -59,7 +59,7 @@ class QcsController extends \BaseController
 
             // redirect
             Session::flash('message', 'Successfully added QC');
-            return Redirect::to(Config::get('syntara::config.uri') . 'qc');
+            return Redirect::route(Config::get('syntara::config.uri') . 'qc');
         }
 
     }
@@ -124,4 +124,12 @@ class QcsController extends \BaseController
         return Redirect::route('qcs.index');
     }
 
+    public function datatable()
+    {
+        return Datatable::collection(Qc::all(array('id', 'email')))
+            ->showColumns('id', 'email')
+            ->searchColumns('email')
+            ->orderColumns('id', 'email')
+            ->make();
+    }
 }
