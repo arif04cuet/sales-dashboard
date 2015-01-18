@@ -10,6 +10,7 @@ class WritersController extends \BaseController
      */
     public function index()
     {
+
         //$writers = Writer::all();
         //return View::make('writers.index', compact('writers'));
         $this->layout = View::make('writers.index');
@@ -203,23 +204,12 @@ class WritersController extends \BaseController
         return Redirect::to(Config::get('syntara::config.uri') . '/writers');
     }
 
-    public function createActionBtn($id)
-    {
-        return
-            '<a href="writers/'.$id.'" title="View this item" class="btn btn-xs btn-primary btn-margin"><i class="glyphicon glyphicon-eye-open"></i>&nbsp;</a>'
-            .'<a href="writers/'.$id.'/edit" title="Edit this item" class="btn btn-xs btn-success btn-margin"><i class="glyphicon glyphicon-pencil"></i>&nbsp;</a>'
-            .Form::open(array('url' => Config::get("syntara::config.uri").'/writers/'.$id,'class' => 'item-remove-form'))
-            .Form::hidden('_method', 'DELETE')
-            .'<button type="submit" title="Delete this item" class="btn remove_levels btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i>&nbsp;</button>'
-            .Form::close();
-    }
-
     public function datatable()
     {
         return Datatable::collection(Writer::all(array('id', 'name', 'email', 'mobile', 'rate')))
             ->showColumns('id', 'name', 'email', 'mobile', 'rate')
             ->addColumn('action', function ($model) {
-                return createActionBtn($model->id);
+                return Utility::createActionBtn($model);
             })
             ->searchColumns('id', 'name', 'email', 'mobile', 'rate')
             ->orderColumns('id', 'name', 'email', 'mobile', 'rate')
