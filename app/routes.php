@@ -18,12 +18,11 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
     Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
     Route::resource('orders', 'OrdersController');
 
+    Route::get('writers/datatable', array('as' => 'writers.datatable', 'uses' => 'WritersController@datatable'));
+    Route::resource('writers', 'WritersController');
+
 });
 Route::get('/test', function()
 {
-    $a = [1, 2, 3, 4, 5];
-
-    array_pop($a);
-
     return View::make('home.test');
 });
