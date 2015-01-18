@@ -1,0 +1,1 @@
+/var/www/html/ongoing/sales-dashboard/app/views/qcs/show.blade.php

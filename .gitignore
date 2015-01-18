@@ -1,6 +1,8 @@
 /bootstrap/compiled.php
-/vendor
 /bootstrap/start.php
+/app/config/local
+/public/bower_components
+/vendor
 composer.phar
 composer.lock
 .env.*.php
@@ -8,5 +10,5 @@ composer.lock
 .DS_Store
 Thumbs.db
 
-public/bower_components
+
 .idea
