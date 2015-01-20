@@ -10,9 +10,20 @@ class QcsController extends \BaseController
      */
     public function index()
     {
-        $qcs = Qc::all();
-
-        return View::make('qcs.index', compact('qcs'));
+        $this->layout = View::make('qcs.index', compact('qcs'));
+        $this->layout->title = 'Quality Controllers';
+        $this->layout->breadcrumb = array(
+            array(
+                'title' => 'Dashboard',
+                'link' => Config::get("syntara::config.uri"),
+                'icon' => 'glyphicon-home'
+            ),
+            array(
+                'title' => 'QC',
+                'link' => Config::get("syntara::config.uri") . '/qc',
+                'icon' => 'glyphicon-user'
+            ),
+        );
     }
 
     /**
@@ -22,7 +33,26 @@ class QcsController extends \BaseController
      */
     public function create()
     {
-        return View::make('qcs.create');
+        $this->layout = View::make('qcs.create');
+        $this->layout->title = 'Add New Quality Controllers';
+        $this->layout->breadcrumb = array(
+            array(
+                'title' => 'Dashboard',
+                'link' => Config::get("syntara::config.uri"),
+                'icon' => 'glyphicon-home'
+            ),
+            array(
+                'title' => 'Writers',
+                'link' => Config::get("syntara::config.uri") . '/qc',
+                'icon' => 'glyphicon-user'
+            ),
+            array(
+                'title' => 'Add New',
+                'link' => Config::get("syntara::config.uri") . '/qc/create',
+                'icon' => 'glyphicon-plus-sign'
+            ),
+
+        );
     }
 
     /**
@@ -58,8 +88,8 @@ class QcsController extends \BaseController
             $qc->save();
 
             // redirect
-            Session::flash('message', 'Successfully added QC');
-            return Redirect::route(Config::get('syntara::config.uri') . 'qc');
+            Session::flash('message', 'Successfully added a QC');
+            return Redirect::to(Config::get('syntara::config.uri') . '/qc');
         }
 
     }
@@ -73,8 +103,26 @@ class QcsController extends \BaseController
     public function show($id)
     {
         $qc = Qc::findOrFail($id);
+        $this->layout = View::make('qcs.show')->with('qc',$qc);
+        $this->layout->title = 'Show Quality Controllers';
+        $this->layout->breadcrumb = array(
+            array(
+                'title' => 'Dashboard',
+                'link' => Config::get("syntara::config.uri"),
+                'icon' => 'glyphicon-home'
+            ),
+            array(
+                'title' => 'QC',
+                'link' => Config::get("syntara::config.uri") . '/qc',
+                'icon' => 'glyphicon-user'
+            ),
+            array(
+                'title' => 'Show',
+                'link' => Config::get("syntara::config.uri") . '/qc/'.$id,
+                'icon' => 'glyphicon-eye-open'
+            ),
 
-        return View::make('qcs.show', compact('qc'));
+        );
     }
 
     /**
@@ -86,8 +134,26 @@ class QcsController extends \BaseController
     public function edit($id)
     {
         $qc = Qc::find($id);
+        $this->layout = View::make('qcs.edit')->with('qc',$qc);
+        $this->layout->title = 'Edit Quality Controllers';
+        $this->layout->breadcrumb = array(
+            array(
+                'title' => 'Dashboard',
+                'link' => Config::get("syntara::config.uri"),
+                'icon' => 'glyphicon-home'
+            ),
+            array(
+                'title' => 'QC',
+                'link' => Config::get("syntara::config.uri") . '/qc',
+                'icon' => 'glyphicon-user'
+            ),
+            array(
+                'title' => 'Edit',
+                'link' => Config::get("syntara::config.uri") . '/qc/'.$id,
+                'icon' => 'glyphicon-eye-open'
+            ),
 
-        return View::make('qcs.edit', compact('qc'));
+        );
     }
 
     /**
@@ -98,17 +164,28 @@ class QcsController extends \BaseController
      */
     public function update($id)
     {
-        $qc = Qc::findOrFail($id);
+        $rules = array(
+            'name' => 'required',
+            'email' => 'required|email',
+            'mobile' => 'required',
+            'rate' => 'required',
+        );
 
         $validator = Validator::make($data = Input::all(), Qc::$rules);
 
         if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
+            return Redirect::back()->withErrors($validator)->withInput(Input::except('password'));
+        } else {
+            $qc = Qc::find($id);
+            $qc->name = $data['name'];
+            $qc->email = $data['email'];
+            $qc->mobile = $data['mobile'];
+            $qc->rate = $data['rate'];
+            $qc->save();
+
+            Session::flash('message', 'Successfully updated a QC.');
+            return Redirect::to(Config::get('syntara::config.uri') . '/qc');
         }
-
-        $qc->update($data);
-
-        return Redirect::route('qcs.index');
     }
 
     /**
@@ -119,17 +196,22 @@ class QcsController extends \BaseController
      */
     public function destroy($id)
     {
-        Qc::destroy($id);
+        $qc = Qc::find($id);
+        $qc->delete();
 
-        return Redirect::route('qcs.index');
+        Session::flash('message','Successfully deleted a QC.');
+        return Redirect::to(Config::get('syntara::config.uri') . '/qc');
     }
 
     public function datatable()
     {
-        return Datatable::collection(Qc::all(array('id', 'email')))
-            ->showColumns('id', 'email')
-            ->searchColumns('email')
-            ->orderColumns('id', 'email')
+        return Datatable::collection(Qc::all(array('id', 'name', 'email', 'mobile', 'rate')))
+            ->showColumns('id', 'name', 'email', 'mobile', 'rate')
+            ->addColumn('action', function ($model) {
+                return Utility::createActionBtn($model, $route='qc');
+            })
+            ->searchColumns('id', 'name', 'email', 'mobile', 'rate')
+            ->orderColumns('id', 'name', 'email', 'mobile', 'rate')
             ->make();
     }
 }

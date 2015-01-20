@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <section class="module">
                 <div class="module-head">
-                    <b>Showing {{ $writers->name }}</b>
+                    <b><strong><i class="glyphicon glyphicon-eye-open"></i> Showing {{ $writers->name }}</strong></b>
                 </div>
                 <div class="module-body">
                     <div class="row">

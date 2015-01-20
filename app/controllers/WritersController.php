@@ -38,7 +38,7 @@ class WritersController extends \BaseController
     public function create()
     {
         $this->layout = View::make('writers.create');
-        $this->layout->title = 'Create Writers';
+        $this->layout->title = 'Add New Writers';
         $this->layout->breadcrumb = array(
             array(
                 'title' => 'Dashboard',
@@ -51,7 +51,7 @@ class WritersController extends \BaseController
                 'icon' => 'glyphicon-user'
             ),
             array(
-                'title' => 'Create',
+                'title' => 'Add New',
                 'link' => Config::get("syntara::config.uri") . '/writers/create',
                 'icon' => 'glyphicon-plus-sign'
             ),
@@ -85,7 +85,7 @@ class WritersController extends \BaseController
             $writer->rate = $data['rate'];
             $writer->save();
 
-            Session::flash('message', 'Writer Created Successfully.');
+            Session::flash('message', 'Successfully added a writer.');
             //return Redirect::route('writers.index');
             return Redirect::to(Config::get('syntara::config.uri') . '/writers');
         }
@@ -181,7 +181,7 @@ class WritersController extends \BaseController
             $writer->rate = $data['rate'];
             $writer->save();
 
-            Session::flash('message', 'Writer Updated Successfully.');
+            Session::flash('message', 'Successfully updated a writer.');
             return Redirect::to(Config::get('syntara::config.uri') . '/writers');
         }
     }
@@ -209,7 +209,7 @@ class WritersController extends \BaseController
         return Datatable::collection(Writer::all(array('id', 'name', 'email', 'mobile', 'rate')))
             ->showColumns('id', 'name', 'email', 'mobile', 'rate')
             ->addColumn('action', function ($model) {
-                return Utility::createActionBtn($model);
+                return Utility::createActionBtn($model, $route='writers');
             })
             ->searchColumns('id', 'name', 'email', 'mobile', 'rate')
             ->orderColumns('id', 'name', 'email', 'mobile', 'rate')
