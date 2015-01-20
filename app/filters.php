@@ -22,6 +22,12 @@ App::before(function ($request) {
             }
         }
     }
+
+    //Manage Permission
+    /*echo '<pre>';
+    $permissions = array_merge(Config::get('permissions'),Config::get('syntara::permissions'));
+    print_r(Sentry::getUser());
+    exit*/;
 });
 
 App::after(function ($request, $response) {
