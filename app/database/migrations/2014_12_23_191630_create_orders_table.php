@@ -28,9 +28,9 @@ class CreateOrdersTable extends Migration
             $table->integer('percent')->default(0);
             $table->float('profit')->default(0);
             $table->tinyInteger('no_of_page')->default(1);
-            $table->integer('salesman_id')->length(10)->unsigned();
-            $table->integer('writer_id')->length(10)->unsigned();
-            $table->integer('qc_id')->length(10)->unsigned();
+            $table->integer('salesman_id')->length(10)->unsigned()->nullable();
+            $table->integer('writer_id')->length(10)->unsigned()->nullable();
+            $table->integer('qc_id')->length(10)->unsigned()->nullable();
             $table->timestamps();
         });
         Schema::table('orders', function ($table) {

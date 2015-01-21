@@ -15,14 +15,18 @@ Route::get('/', function () {
     return Redirect::to(Config::get('syntara::config.uri'));
 });
 Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::config.uri')), function () {
-    Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
-    Route::resource('orders', 'OrdersController');
+
     //for QC
     Route::get('qc/datatable', array('as' => 'qc.datatable', 'uses' => 'QcsController@datatable'));
     Route::resource('qc', 'QcsController');
 
+    //for Writer
     Route::get('writers/datatable', array('as' => 'writers.datatable', 'uses' => 'WritersController@datatable'));
     Route::resource('writers', 'WritersController');
+
+    //for Order
+    Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
+    Route::resource('orders', 'OrdersController');
 
 });
 Route::get('/test', function()
