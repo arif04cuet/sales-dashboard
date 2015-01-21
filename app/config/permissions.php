@@ -1,5 +1,10 @@
-<?php 
+<?php
 
 return array(
-        'test' => 'management'
+    'ListQc' => 'list-qc',
+    'CreateQc' => 'create-qc',
+    'EditQc' => 'edit-qc',
+    'ShowQc' => 'show-qc',
+    'DeleteQc' => 'delete-qc',
+
 );

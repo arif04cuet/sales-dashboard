@@ -24,10 +24,18 @@ App::before(function ($request) {
     }
 
     //Manage Permission
-    /*echo '<pre>';
-    $permissions = array_merge(Config::get('permissions'),Config::get('syntara::permissions'));
-    print_r(Sentry::getUser());
-    exit*/;
+
+    $permissions = Config::get('permissions');
+    foreach ($permissions as $key => $val) {
+        $permission = DB::table('permissions')->where('value', $val)->first();
+        if (!$permission) {
+            DB::table('permissions')->insert(
+                array('name' => $key, 'value' => $val, 'description' => $key)
+            );
+        }
+    }
+
+
 });
 
 App::after(function ($request, $response) {
