@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Shahid
@@ -18,7 +17,18 @@ class Utility
             . '<button type="submit" title="Delete this item" class="btn remove_levels btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i>&nbsp;</button>'
             . Form::close();
     }
-
+    public static function orderAllowedCol($userType){
+            switch($userType){
+                case 1: //for user type 1
+                    $col = array('id', 'order_date', 'client', 'fee');
+                    return $col;
+                    break;
+                case 2: //for user type 2
+                    $col = array('id', 'order_date', 'client');
+                    return $col;
+                    break;
+            }
+    }
     public static function test()
     {
         return 'ok';

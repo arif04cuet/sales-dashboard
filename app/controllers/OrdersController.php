@@ -33,7 +33,26 @@ class OrdersController extends BaseController
      */
     public function create()
     {
-        //
+        $this->layout = View::make('orders.create');
+        $this->layout->title = 'Create an Order';
+        $this->layout->breadcrumb = array(
+            array(
+                'title' => 'Dashboard',
+                'link' => Config::get("syntara::config.uri"),
+                'icon' => 'glyphicon-home'
+            ),
+            array(
+                'title' => 'Orders',
+                'link' => Config::get("syntara::config.uri") . '/orders',
+                'icon' => 'glyphicon-user'
+            ),
+            array(
+                'title' => 'Create',
+                'link' => Config::get("syntara::config.uri") . '/orders/create',
+                'icon' => 'glyphicon-plus-sign'
+            ),
+
+        );
     }
 
     /**
@@ -44,7 +63,26 @@ class OrdersController extends BaseController
      */
     public function store()
     {
-        //
+        $rules = array(
+            'order_date' => 'required',
+            'client' => 'required',
+            'fee' => 'required'
+        );
+
+        $validator = Validator::make($data = Input::all(), Order::$rules);
+
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput(Input::except('password'));
+        } else {
+            $order = new Order;
+            $order->order_date = date('Y-m-d', strtotime($data['order_date']));
+            $order->client = $data['client'];
+            $order->fee = $data['fee'];
+            $order->save();
+
+            Session::flash('message', 'Successfully created an order.');
+            return Redirect::to(Config::get('syntara::config.uri') . '/orders');
+        }
     }
 
     /**
@@ -97,11 +135,12 @@ class OrdersController extends BaseController
 
     public function datatable()
     {
-        $columns = Order::getOrdersColumn();
-        return Datatable::collection(User::all(array('id', 'email')))
-            ->showColumns('id', 'email')
-            ->searchColumns('email')
-            ->orderColumns('id', 'email')
+        $userType = 1;
+        $col = Utility::orderAllowedCol($userType);
+        return Datatable::collection(Order::all($col))
+            ->showColumns($col)
+            ->searchColumns($col)
+            ->orderColumns($col)
             ->make();
     }
 
