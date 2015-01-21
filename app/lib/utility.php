@@ -19,6 +19,20 @@ class Utility
             . Form::close();
     }
 
+    public static function orderAllowedCol($userType){
+            switch($userType){
+                case 1: //for user type 1
+                    $col = array('id', 'order_date', 'client', 'fee');
+                    return $col;
+                    break;
+
+                case 2: //for user type 2
+                    $col = array('id', 'order_date', 'client');
+                    return $col;
+                    break;
+            }
+    }
+
     public static function test()
     {
         return 'ok';
