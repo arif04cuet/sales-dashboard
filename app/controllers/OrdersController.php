@@ -17,7 +17,7 @@ class OrdersController extends BaseController
         $this->layout->breadcrumb = array(
             array(
                 'title' => 'Orders',
-                'link' => 'dashboard/orders',
+                'link' => URL::route('ListOrders'),
                 'icon' => 'glyphicon-home'
             ),
 
@@ -43,12 +43,12 @@ class OrdersController extends BaseController
             ),
             array(
                 'title' => 'Orders',
-                'link' => Config::get("syntara::config.uri") . '/orders',
+                'link' => URL::route('ListOrders'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Create',
-                'link' => Config::get("syntara::config.uri") . '/orders/create',
+                'link' => URL::route('CreateOrders'),
                 'icon' => 'glyphicon-plus-sign'
             ),
 
@@ -64,9 +64,10 @@ class OrdersController extends BaseController
     public function store()
     {
         $rules = array(
-            'order_date' => 'required',
             'client' => 'required',
-            'fee' => 'required'
+            'sale_price' => 'required',
+            'product_list' => 'required',
+            'amount_paid' => 'required',
         );
 
         $validator = Validator::make($data = Input::all(), Order::$rules);
@@ -75,13 +76,15 @@ class OrdersController extends BaseController
             return Redirect::back()->withErrors($validator)->withInput(Input::except('password'));
         } else {
             $order = new Order;
-            $order->order_date = date('Y-m-d', strtotime($data['order_date']));
+            $order->order_date = date('Y-m-d');
             $order->client = $data['client'];
-            $order->fee = $data['fee'];
+            $order->sale_price = $data['sale_price'];
+            $order->amount_paid = $data['amount_paid'];
+            $order->outstanding = $data['sale_price'] - $data['amount_paid'];
             $order->save();
 
             Session::flash('message', 'Successfully created an order.');
-            return Redirect::to(Config::get('syntara::config.uri') . '/orders');
+            return Redirect::route('ListOrders');
         }
     }
 
@@ -135,8 +138,8 @@ class OrdersController extends BaseController
 
     public function datatable()
     {
-        $userType = 1;
-        $col = Utility::orderAllowedCol($userType);
+        $userType = 3;
+        $col = Order::orderAllowedCol($userType);
         return Datatable::collection(Order::all($col))
             ->showColumns($col)
             ->searchColumns($col)

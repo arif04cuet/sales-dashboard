@@ -8,7 +8,7 @@
                 <div class="module-head"><b><strong><i class="glyphicon glyphicon-pencil"></i> Edit {{ $qc->name }}</strong></b></div>
                 <br/>
                 <div class="module-body">
-                    {{ Form::model($qc, array('url'=>Config::get("syntara::config.uri").'/qc/'.$qc->id, 'class'=>'form-horizontal', 'method'=>'PUT')) }}
+                    {{ Form::model($qc, array('url'=>URL::route("UpdateQc", $qc->id), 'class'=>'form-horizontal', 'method'=>'PUT')) }}
                     <div class="form-group">
                         {{ Form::label('name', 'Name', array('class'=>'col-md-2 control-label')) }}
                         <div class="col-md-5">

@@ -10,15 +10,8 @@
                 <br/>
 
                 <div class="module-body">
-                    {{ Form::open(array('url'=>Config::get("syntara::config.uri").'/orders',
+                    {{ Form::open(array('url'=>URL::route("StoreOrders"),
                     'class'=>'form-horizontal')) }}
-                    <div class="form-group">
-                        {{ Form::label('order_date', 'Order Date', array('class'=>'col-md-2 control-label')) }}
-                        <div class="col-md-2">
-                            {{ Form::input('datetime', 'order_date', Input::old('order_date'),
-                            array('class'=>'form-control datepicker', 'placeholder'=>'Order Date', 'required')) }}
-                        </div>
-                    </div>
                     <div class="form-group">
                         {{ Form::label('client', 'Client Name', array('class'=>'col-md-2 control-label')) }}
                         <div class="col-md-5">
@@ -27,10 +20,34 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        {{ Form::label('fee', 'Fee', array('class'=>'col-md-2 control-label')) }}
+                        {{ Form::label('sale_price', 'Sale Price', array('class'=>'col-md-2 control-label')) }}
                         <div class="col-md-5">
-                            {{ Form::text('fee', Input::old('fee'), array('class'=>'form-control',
-                            'placeholder'=>'Fee', 'required')) }}
+                            {{ Form::text('sale_price', Input::old('sale_price'), array('class'=>'form-control',
+                            'placeholder'=>'Sale Price', 'required')) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('product_list', 'Product List', array('class'=>'col-md-2 control-label')) }}
+                        <div class="col-md-5">
+                            <?php
+                                foreach(Product::all() as $value){
+                                    $products[$value->id] = $value->name;
+                                }
+                            ?>
+                            {{ Form::select('product_list', $products, null, array('class'=>'form-control')) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('amount_paid', 'Amount Paid', array('class'=>'col-md-2 control-label')) }}
+                        <div class="col-md-5">
+                            {{ Form::text('amount_paid', Input::old('sale_price'), array('class'=>'form-control',
+                            'placeholder'=>'Amount Paid', 'required')) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ Form::label('outstanding', 'Outstanding', array('class'=>'col-md-2 control-label')) }}
+                        <div class="col-md-5">
+                            {{ Form::text('outstanding', 0, array('class'=>'form-control', 'disabled')) }}
                         </div>
                     </div>
                     <div class="form-group">
@@ -47,10 +64,20 @@
     </div>
 </div>
 <script type="text/javascript">
-    $('.datepicker').datepicker({
+    /*$('.datepicker').datepicker({
         format: 'dd-mm-yyyy',
         todayBtn: "linked",
         todayHighlight: true
+    });*/
+
+    $('#sale_price').keyup(function(){
+        var outstanding = $('#sale_price').val() - $('#amount_paid').val();
+        $('#outstanding').val(outstanding);
+    });
+
+    $('#amount_paid').keyup(function(){
+        var outstanding = $('#sale_price').val() - $('#amount_paid').val();
+        $('#outstanding').val(outstanding);
     });
 </script>
 @stop

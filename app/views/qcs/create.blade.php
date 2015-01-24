@@ -8,7 +8,7 @@
                 <div class="module-head"><b><strong><i class="glyphicon glyphicon-plus-sign"></i> Add Quality Controllers</strong></b></div>
                 <br/>
                 <div class="module-body">
-                    {{ Form::open(array('url'=>Config::get("syntara::config.uri").'/qc', 'class'=>'form-horizontal')) }}
+                    {{ Form::open(array('url'=>URL::route('StoreQc'), 'class'=>'form-horizontal')) }}
                     <div class="form-group">
                         {{ Form::label('name', 'Name', array('class'=>'col-md-2 control-label')) }}
                         <div class="col-md-5">

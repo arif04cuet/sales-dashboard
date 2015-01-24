@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-12 text-right">
             <div style="padding:20px 0;">
-                <a href="writers/create" class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-plus-sign"></i> Add New</a>
+                <a href={{URL::route('CreateWriters')}} class="btn btn-danger btn-sm"><i class="glyphicon glyphicon-plus-sign"></i> Add New</a>
             </div>
         </div>
     </div>

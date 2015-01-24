@@ -23,7 +23,7 @@ class WritersController extends \BaseController
             ),
             array(
                 'title' => 'Writers',
-                'link' => Config::get("syntara::config.uri") . '/writers',
+                'link' => URL::route('ListWriters'),
                 'icon' => 'glyphicon-user'
             ),
 
@@ -47,12 +47,12 @@ class WritersController extends \BaseController
             ),
             array(
                 'title' => 'Writers',
-                'link' => Config::get("syntara::config.uri") . '/writers',
+                'link' => URL::route('ListWriters'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Add New',
-                'link' => Config::get("syntara::config.uri") . '/writers/create',
+                'link' => URL::route('CreateWriters'),
                 'icon' => 'glyphicon-plus-sign'
             ),
 
@@ -87,7 +87,7 @@ class WritersController extends \BaseController
 
             Session::flash('message', 'Successfully added a writer.');
             //return Redirect::route('writers.index');
-            return Redirect::to(Config::get('syntara::config.uri') . '/writers');
+            return Redirect::route('ListWriters');
         }
     }
 
@@ -111,12 +111,12 @@ class WritersController extends \BaseController
             ),
             array(
                 'title' => 'Writers',
-                'link' => Config::get("syntara::config.uri") . '/writers',
+                'link' => URL::route('ListWriters'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Show',
-                'link' => Config::get("syntara::config.uri") . '/writers/'.$id,
+                'link' => URL::route('ShowWriters',$id),
                 'icon' => 'glyphicon-eye-open'
             ),
 
@@ -142,12 +142,12 @@ class WritersController extends \BaseController
             ),
             array(
                 'title' => 'Writers',
-                'link' => Config::get("syntara::config.uri") . '/writers',
+                'link' => URL::route('ListWriters'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Edit',
-                'link' => Config::get("syntara::config.uri") . '/writers/'.$id.'/edit',
+                'link' => URL::route('EditWriters',$id),
                 'icon' => 'glyphicon-pencil'
             ),
 
@@ -182,7 +182,7 @@ class WritersController extends \BaseController
             $writer->save();
 
             Session::flash('message', 'Successfully updated a writer.');
-            return Redirect::to(Config::get('syntara::config.uri') . '/writers');
+            return Redirect::route('ListWriters');
         }
     }
 
@@ -201,7 +201,7 @@ class WritersController extends \BaseController
         $writers->delete();
 
         Session::flash('message','Successfully deleted a writer.');
-        return Redirect::to(Config::get('syntara::config.uri') . '/writers');
+        return Redirect::route('ListWriters');
     }
 
     public function datatable()
@@ -209,7 +209,7 @@ class WritersController extends \BaseController
         return Datatable::collection(Writer::all(array('id', 'name', 'email', 'mobile', 'rate')))
             ->showColumns('id', 'name', 'email', 'mobile', 'rate')
             ->addColumn('action', function ($model) {
-                return Utility::createActionBtn($model, $route='writers');
+                return Utility::createActionBtn($model, $route='Writers');
             })
             ->searchColumns('id', 'name', 'email', 'mobile', 'rate')
             ->orderColumns('id', 'name', 'email', 'mobile', 'rate')

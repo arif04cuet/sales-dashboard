@@ -20,7 +20,7 @@ class QcsController extends \BaseController
             ),
             array(
                 'title' => 'QC',
-                'link' => Config::get("syntara::config.uri") . '/qc',
+                'link' => URL::route('ListQc'),
                 'icon' => 'glyphicon-user'
             ),
         );
@@ -42,13 +42,13 @@ class QcsController extends \BaseController
                 'icon' => 'glyphicon-home'
             ),
             array(
-                'title' => 'Writers',
-                'link' => Config::get("syntara::config.uri") . '/qc',
+                'title' => 'QC',
+                'link' => URL::route('ListQc'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Add New',
-                'link' => Config::get("syntara::config.uri") . '/qc/create',
+                'link' => URL::route('CreateQc'),
                 'icon' => 'glyphicon-plus-sign'
             ),
 
@@ -89,7 +89,7 @@ class QcsController extends \BaseController
 
             // redirect
             Session::flash('message', 'Successfully added a QC');
-            return Redirect::to(Config::get('syntara::config.uri') . '/qc');
+            return Redirect::route('ListQc');
         }
 
     }
@@ -113,12 +113,12 @@ class QcsController extends \BaseController
             ),
             array(
                 'title' => 'QC',
-                'link' => Config::get("syntara::config.uri") . '/qc',
+                'link' => URL::route('ListQc'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Show',
-                'link' => Config::get("syntara::config.uri") . '/qc/'.$id,
+                'link' => URL::route('ShowQc',$id),
                 'icon' => 'glyphicon-eye-open'
             ),
 
@@ -144,12 +144,12 @@ class QcsController extends \BaseController
             ),
             array(
                 'title' => 'QC',
-                'link' => Config::get("syntara::config.uri") . '/qc',
+                'link' => URL::route('ListQc'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Edit',
-                'link' => Config::get("syntara::config.uri") . '/qc/'.$id,
+                'link' => URL::route('EditQc',$id),
                 'icon' => 'glyphicon-eye-open'
             ),
 
@@ -184,7 +184,7 @@ class QcsController extends \BaseController
             $qc->save();
 
             Session::flash('message', 'Successfully updated a QC.');
-            return Redirect::to(Config::get('syntara::config.uri') . '/qc');
+            return Redirect::route('ListQc');
         }
     }
 
@@ -200,7 +200,7 @@ class QcsController extends \BaseController
         $qc->delete();
 
         Session::flash('message','Successfully deleted a QC.');
-        return Redirect::to(Config::get('syntara::config.uri') . '/qc');
+        return Redirect::route('ListQc');
     }
 
     public function datatable()
@@ -208,7 +208,7 @@ class QcsController extends \BaseController
         return Datatable::collection(Qc::all(array('id', 'name', 'email', 'mobile', 'rate')))
             ->showColumns('id', 'name', 'email', 'mobile', 'rate')
             ->addColumn('action', function ($model) {
-                return Utility::createActionBtn($model, $route='qc');
+                return Utility::createActionBtn($model, $route='Qc');
             })
             ->searchColumns('id', 'name', 'email', 'mobile', 'rate')
             ->orderColumns('id', 'name', 'email', 'mobile', 'rate')
