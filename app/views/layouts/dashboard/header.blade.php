@@ -37,6 +37,7 @@
             @endif
             <li><a href="{{ URL::route('indexDashboard').'/writers' }}"><i class="glyphicon glyphicon-user"></i> <span>Writers</span></a></li>
             <li><a href="{{ URL::route('indexDashboard').'/qc' }}"><i class="glyphicon glyphicon-user"></i> <span>QC</span></a></li>
+            <li><a href="{{ URL::route('indexDashboard').'/orders' }}"><i class="glyphicon glyphicon-user"></i> <span>Orders</span></a></li>
         </ul>
 
         @if(Sentry::check())

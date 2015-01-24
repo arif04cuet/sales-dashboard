@@ -22,6 +22,20 @@ App::before(function ($request) {
             }
         }
     }
+
+    //Manage Permission
+
+    $permissions = Config::get('permissions');
+    foreach ($permissions as $key => $val) {
+        $permission = DB::table('permissions')->where('value', $val)->first();
+        if (!$permission) {
+            DB::table('permissions')->insert(
+                array('name' => $key, 'value' => $val, 'description' => $key)
+            );
+        }
+    }
+
+
 });
 
 App::after(function ($request, $response) {
