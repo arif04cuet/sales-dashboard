@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="{{ (!empty($siteUrl)) ? $siteUrl : '/'}} " target="_new">
-            {{ (!empty($siteName)) ? $siteName : "Syntara"}}
+            {{ (!empty($siteName)) ? $siteName : "Dashboard"}}
 
             <div class="visible-sm"><img class="ajax-loader ajax-loader-sm" src="{{ asset('packages/mrjuliuss/syntara/assets/img/ajax-load.gif') }}" style="float: right;"/></div>
         </a>
@@ -14,8 +14,9 @@
 
     <div class="navbar-collapse collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-            <li class=""><a href="{{ URL::route('indexDashboard') }}"><i class="glyphicon glyphicon-home"></i> <span>{{ trans('syntara::navigation.index') }}</span></a></li>
+
             @if (Sentry::check())
+                <li class=""><a href="{{ URL::route('indexDashboard') }}"><i class="glyphicon glyphicon-home"></i> <span>{{ trans('syntara::navigation.index') }}</span></a></li>
                 @if($currentUser->hasAccess(Config::get('syntara::permissions.listUsers')) || $currentUser->hasAccess(Config::get('syntara::permissions.listGroups')))
                 <li class="dropdown" >
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-user"></i> <span>{{ trans('syntara::navigation.users') }}</span></a>
@@ -34,10 +35,12 @@
                 </li>
                 @endif
                 {{ (!empty($navPages)) ? $navPages : '' }}
+                 <li><a href="{{ URL::route('indexDashboard').'/writers' }}"><i class="glyphicon glyphicon-user"></i> <span>Writers</span></a></li>
+                            <li><a href="{{ URL::route('indexDashboard').'/qc' }}"><i class="glyphicon glyphicon-user"></i> <span>QC</span></a></li>
+                            <li><a href="{{ URL::route('indexDashboard').'/orders' }}"><i class="glyphicon glyphicon-user"></i> <span>Orders</span></a></li>
+                            <li><a href="{{ URL::route('indexDashboard').'/products' }}"><i class="glyphicon glyphicon-user"></i> <span>Products</span></a></li>
             @endif
-            <li><a href="{{ URL::route('indexDashboard').'/writers' }}"><i class="glyphicon glyphicon-user"></i> <span>Writers</span></a></li>
-            <li><a href="{{ URL::route('indexDashboard').'/qc' }}"><i class="glyphicon glyphicon-user"></i> <span>QC</span></a></li>
-            <li><a href="{{ URL::route('indexDashboard').'/orders' }}"><i class="glyphicon glyphicon-user"></i> <span>Orders</span></a></li>
+
         </ul>
 
         @if(Sentry::check())

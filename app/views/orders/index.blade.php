@@ -17,7 +17,7 @@
                 <div class="module-head"><b><strong><i class="glyphicon glyphicon-user"></i> All Orders</strong></b></div>
                 <div class="module-body">
                     {{ Datatable::table()
-                    ->addColumn(Order::orderAllowedCol($userType=3)) // these are the column headings to be shown
+                    ->addColumn($columns) // these are the column headings to be shown
                     ->setUrl(route('orders.datatable')) // this is the route where data will be retrieved
                     ->render() }}
                 </div>

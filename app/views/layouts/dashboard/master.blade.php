@@ -24,7 +24,7 @@
     <script src="{{ asset('packages/mrjuliuss/syntara/assets/js/dashboard/base.js') }}"></script>
     <script src="http://eternicode.github.io/bootstrap-datepicker/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 
-    <title>{{ (!empty($siteName)) ? $siteName : "Syntara"}} - {{isset($title) ? $title : '' }}</title>
+    <title>{{ (!empty($siteName)) ? $siteName : "Dashboard"}} - {{isset($title) ? $title : '' }}</title>
     <style>
         /*.btn-syntara{background: #b94a48; color:#fff;}*/
         .alert{margin: 20px 0 0 0;}

@@ -1,6 +1,6 @@
 <?php
 
-class QcsController extends \BaseController
+class SalesManController extends \BaseController
 {
 
     /**
@@ -10,8 +10,8 @@ class QcsController extends \BaseController
      */
     public function index()
     {
-        $this->layout = View::make('qcs.index', compact('qcs'));
-        $this->layout->title = 'Quality Controllers';
+        $this->layout = View::make('salesman.index', compact('salesmans'));
+        $this->layout->title = 'Sales Mans';
         $this->layout->breadcrumb = array(
             array(
                 'title' => 'Dashboard',
@@ -19,8 +19,8 @@ class QcsController extends \BaseController
                 'icon' => 'glyphicon-home'
             ),
             array(
-                'title' => 'QC',
-                'link' => URL::route('ListQc'),
+                'title' => 'Sales Man',
+                'link' => URL::route('ListSalesMan'),
                 'icon' => 'glyphicon-user'
             ),
         );
@@ -33,8 +33,8 @@ class QcsController extends \BaseController
      */
     public function create()
     {
-        $this->layout = View::make('qcs.create');
-        $this->layout->title = 'Add New Quality Controllers';
+        $this->layout = View::make('salesman.create');
+        $this->layout->title = 'Add New Sales Man';
         $this->layout->breadcrumb = array(
             array(
                 'title' => 'Dashboard',
@@ -42,13 +42,13 @@ class QcsController extends \BaseController
                 'icon' => 'glyphicon-home'
             ),
             array(
-                'title' => 'QC',
-                'link' => URL::route('ListQc'),
+                'title' => 'Sales Man',
+                'link' => URL::route('ListSalesMan'),
                 'icon' => 'glyphicon-user'
             ),
             array(
                 'title' => 'Add New',
-                'link' => URL::route('CreateQc'),
+                'link' => URL::route('CreateSalesMan'),
                 'icon' => 'glyphicon-plus-sign'
             ),
 
@@ -68,14 +68,12 @@ class QcsController extends \BaseController
             'name' => 'required',
             'email' => 'required|email',
             'mobile' => 'required',
-            'rate' => 'required',
-
         );
         $validator = Validator::make(Input::all(), $rules);
 
         // process the login
         if ($validator->fails()) {
-            return Redirect::route(Config::get('syntara::config.uri') . 'qc.create')
+            return Redirect::route('CreateSalesMan')
                 ->withErrors($validator)
                 ->withInput(Input::all());
         } else {
@@ -103,7 +101,7 @@ class QcsController extends \BaseController
     public function show($id)
     {
         $qc = Qc::findOrFail($id);
-        $this->layout = View::make('qcs.show')->with('qc',$qc);
+        $this->layout = View::make('salesman.show')->with('qc',$qc);
         $this->layout->title = 'Show Quality Controllers';
         $this->layout->breadcrumb = array(
             array(
@@ -134,7 +132,7 @@ class QcsController extends \BaseController
     public function edit($id)
     {
         $qc = Qc::find($id);
-        $this->layout = View::make('qcs.edit')->with('qc',$qc);
+        $this->layout = View::make('salesman.edit')->with('qc',$qc);
         $this->layout->title = 'Edit Quality Controllers';
         $this->layout->breadcrumb = array(
             array(

@@ -12,6 +12,7 @@ class OrdersController extends BaseController
      */
     public function index()
     {
+
         $this->layout = View::make('orders.index');
         $this->layout->title = 'Orders';
         $this->layout->breadcrumb = array(
@@ -22,6 +23,8 @@ class OrdersController extends BaseController
             ),
 
         );
+        $columns = Order::orderAllowedCol(Utility::getUserType());
+        $this->layout->columns = Utility::underscoreToSpace($columns);
 
     }
 
@@ -33,6 +36,7 @@ class OrdersController extends BaseController
      */
     public function create()
     {
+
         $this->layout = View::make('orders.create');
         $this->layout->title = 'Create an Order';
         $this->layout->breadcrumb = array(
@@ -53,6 +57,7 @@ class OrdersController extends BaseController
             ),
 
         );
+        $this->layout->products = Product::all()->lists('name', 'id');
     }
 
     /**
@@ -77,10 +82,12 @@ class OrdersController extends BaseController
         } else {
             $order = new Order;
             $order->order_date = date('Y-m-d');
+            $order->due_date = date('Y-m-d H:i:s', strtotime(str_replace('/', '-', Input::get('due_date'))));
             $order->client = $data['client'];
             $order->sale_price = $data['sale_price'];
             $order->amount_paid = $data['amount_paid'];
             $order->outstanding = $data['sale_price'] - $data['amount_paid'];
+            $order->status = 'TA';
             $order->save();
 
             Session::flash('message', 'Successfully created an order.');
@@ -138,7 +145,7 @@ class OrdersController extends BaseController
 
     public function datatable()
     {
-        $userType = 3;
+        $userType = Utility::getUserType();
         $col = Order::orderAllowedCol($userType);
         return Datatable::collection(Order::all($col))
             ->showColumns($col)

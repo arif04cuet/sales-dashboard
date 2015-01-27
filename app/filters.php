@@ -98,3 +98,27 @@ Route::filter('csrf', function () {
         throw new Illuminate\Session\TokenMismatchException;
     }
 });
+Route::filter('hasPermissions', function($route, $request, $userPermission = null)
+{
+    if (Route::currentRouteNamed('putUser') && Sentry::getUser()->id == Request::segment(3) ||
+        Route::currentRouteNamed('showUser') && Sentry::getUser()->id == Request::segment(3))
+    {
+    }
+    else
+    {
+        if($userPermission === null)
+        {
+            $permissions = array_merge(Config::get('permissions'),Config::get('syntara::permissions'));
+            $permission = $permissions[Route::current()->getName()];
+        }
+        else
+        {
+            $permission = $userPermission;
+        }
+
+        if(!Sentry::getUser()->hasAccess($permission))
+        {
+            return Redirect::route('accessDenied');
+        }
+    }
+});

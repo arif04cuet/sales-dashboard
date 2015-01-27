@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Shahid
@@ -7,22 +8,31 @@
  */
 class Utility
 {
-    public static function createActionBtn($model,$route)
+    public static function createActionBtn($model, $route)
     {
         return
-            '<a href="' . URL::route('Show'.$route, array('id' => $model->id)) . '" title="View this item" class="btn btn-xs btn-primary btn-margin">
+            '<a href="' . URL::route('Show' . $route, array('id' => $model->id)) . '" title="View this item" class="btn btn-xs btn-primary btn-margin">
 <i class="glyphicon glyphicon-eye-open"></i>&nbsp;</a>'
-            . '<a href="' . URL::route('Edit'.$route, array('id' => $model->id)) . '" title="Edit this item" class="btn btn-xs btn-success btn-margin">
+            . '<a href="' . URL::route('Edit' . $route, array('id' => $model->id)) . '" title="Edit this item" class="btn btn-xs btn-success btn-margin">
 <i class="glyphicon glyphicon-pencil"></i>&nbsp;</a>'
-            . Form::open(array('url' => URL::route('Delete'.$route, array('id' => $model->id)), 'class' => 'item-remove-form'))
+            . Form::open(array('url' => URL::route('Delete' . $route, array('id' => $model->id)), 'class' => 'item-remove-form'))
             . Form::hidden('_method', 'DELETE')
             . '<button type="submit" title="Delete this item" class="btn remove_levels btn-xs btn-danger">
 <i class="glyphicon glyphicon-trash"></i>&nbsp;</button>'
             . Form::close();
     }
 
-    public static function test()
+    public static function getUserType()
     {
-        return 'ok';
+        $groups = Sentry::getUser()->getGroups()->toArray();
+        return $groups[0]['name'];
+
+    }
+
+    public static function underscoreToSpace(array $data)
+    {
+        return array_map(function ($value) {
+            return ucfirst(str_replace('_', ' ', $value));
+        }, $data);
     }
 } 
