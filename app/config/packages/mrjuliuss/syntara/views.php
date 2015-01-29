@@ -12,7 +12,7 @@ return array(
     'error' => 'syntara::dashboard.error',
 
     // users
-    'users-index' => 'syntara::user.index-user',
+    'users-index' => 'user.index-user',
     'users-list' => 'syntara::user.list-users',
     'user-create' => 'syntara::user.new-user',
     'user-informations' => 'syntara::user.user-informations',
