@@ -59,6 +59,8 @@ Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::g
     Route::get('orders/{id}/edit', array('as' => 'EditOrders', 'uses' => 'OrdersController@edit'));
     Route::delete('orders/{id}', array('as' => 'DeleteOrders', 'uses' => 'OrdersController@destroy'));
 
+    Route::get('orders/{id}/details', array('as' => 'DetailsOrders', 'uses' => 'OrdersController@details'));
+
     //for Products
     Route::get('products/', array('as' => 'ListProducts', 'uses' => 'ProductsController@index'));
     Route::get('products/create', array('as' => 'CreateProducts', 'uses' => 'ProductsController@create'));

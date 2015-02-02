@@ -18,6 +18,7 @@
                 <div class="module-body">
                     {{ Datatable::table()
                     ->addColumn($columns) // these are the column headings to be shown
+                    ->addColumn('Details')
                     ->setUrl(route('orders.datatable')) // this is the route where data will be retrieved
                     ->render() }}
                 </div>

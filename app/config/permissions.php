@@ -13,4 +13,6 @@ return array(
     'EditProducts' => 'edit-products',
     'ShowProducts' => 'show-products',
     'DeleteProducts' => 'delete-products',
+
+    'DetailsOrders' => 'details-orders'
 );

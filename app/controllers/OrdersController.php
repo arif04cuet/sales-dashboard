@@ -124,6 +124,33 @@ class OrdersController extends BaseController
      * @param  int $id
      * @return Response
      */
+
+    public function details($id)
+    {
+        $orders = Order::findOrFail($id);
+        $this->layout = View::make('orders.details')->with('orders', $orders);
+        $this->layout->title = 'Orders Details';
+        $this->layout->breadcrumb = array(
+            array(
+                'title' => 'Dashboard',
+                'link' => Config::get("syntara::config.uri"),
+                'icon' => 'glyphicon-home'
+            ),
+            array(
+                'title' => 'Orders',
+                'link' => URL::route('ListOrders'),
+                'icon' => 'glyphicon-user'
+            ),
+            array(
+                'title' => 'Details',
+                'link' => URL::route('DetailsOrders',$id),
+                'icon' => 'glyphicon-eye-open'
+            ),
+        );
+
+
+    }
+
     public function edit($id)
     {
         //
@@ -159,6 +186,9 @@ class OrdersController extends BaseController
         $col = Order::orderAllowedCol($userType);
         return Datatable::collection(Order::all($col))
             ->showColumns($col)
+            ->addColumn('model',function($model){
+                return '<a href="'.URL::route('DetailsOrders',$model->id).'">Details</a>';
+            })
             ->searchColumns($col)
             ->orderColumns($col)
             ->make();
