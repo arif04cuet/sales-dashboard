@@ -17,7 +17,7 @@ return array(
     'user-create' => 'syntara::user.new-user',
     'user-informations' => 'syntara::user.user-informations',
     'user-profile' => 'syntara::user.show-user',
-    'user-activation' => 'syntara::user.activation',
+    'user-activation' => 'user.activation',
 
     // groups
     'groups-index' => 'syntara::group.index-group',

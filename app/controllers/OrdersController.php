@@ -88,9 +88,19 @@ class OrdersController extends BaseController
             $order->amount_paid = $data['amount_paid'];
             $order->outstanding = $data['sale_price'] - $data['amount_paid'];
             $order->status = 'TA';
-            $order->save();
 
-            Session::flash('message', 'Successfully created an order.');
+            $data = array_merge($order->toArray(), Sentry::getUser()->toArray());
+            if ($order->save()) {
+                // send email to manager
+                Mail::queue('emails.new-order-manager', $data, function ($message) {
+                    $message->from(Config::get('syntara::mails.email'), Config::get('syntara::mails.contact'))
+                        ->subject(Config::get('syntara::mails.new-order-manager-subject'));
+                    $message->to(Config::get('syntara::mails.new-order-manager'));
+                });
+                Session::flash('message', 'Email has been send to Manager.');
+            }
+
+            Session::flash('message', 'Order has been created successfully');
             return Redirect::route('ListOrders');
         }
     }

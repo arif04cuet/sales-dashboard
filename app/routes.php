@@ -15,7 +15,7 @@ Route::get('/', function () {
     return Redirect::to(Config::get('syntara::config.uri'));
 });
 Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::config.uri')), function () {
-    //for QCs
+    /*//for QCs
     Route::get('qc/datatable', array('as' => 'qc.datatable', 'uses' => 'QcsController@datatable'));
     Route::post('qc', array('as' => 'StoreQc', 'uses' => 'QcsController@store'));
     Route::put('qc/{id}', array('as' => 'UpdateQc', 'uses' => 'QcsController@update'));
@@ -24,7 +24,7 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
     Route::get('writers/datatable', array('as' => 'writers.datatable', 'uses' => 'WritersController@datatable'));
     Route::post('writers', array('as' => 'StoreWriters', 'uses' => 'WritersController@store'));
     Route::put('writers/{id}', array('as' => 'UpdateWriters', 'uses' => 'WritersController@update'));
-
+    */
     //for Orders
     Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
     Route::post('orders', array('as' => 'StoreOrders', 'uses' => 'OrdersController@store'));
@@ -37,7 +37,7 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
 
 });
 Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::get('syntara::config.uri')), function () {
-    //for QCs
+    /*//for QCs
     Route::get('qc/', array('as' => 'ListQc', 'uses' => 'QcsController@index'));
     Route::get('qc/create', array('as' => 'CreateQc', 'uses' => 'QcsController@create'));
     Route::get('qc/{id}', array('as' => 'ShowQc', 'uses' => 'QcsController@show'));
@@ -50,6 +50,7 @@ Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::g
     Route::get('writers/{id}', array('as' => 'ShowWriters', 'uses' => 'WritersController@show'));
     Route::get('writers/{id}/edit', array('as' => 'EditWriters', 'uses' => 'WritersController@edit'));
     Route::delete('writers/{id}', array('as' => 'DeleteWriters', 'uses' => 'WritersController@destroy'));
+    */
 
     //for Orders
     Route::get('orders/', array('as' => 'ListOrders', 'uses' => 'OrdersController@index'));
@@ -58,7 +59,7 @@ Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::g
     Route::get('orders/{id}/edit', array('as' => 'EditOrders', 'uses' => 'OrdersController@edit'));
     Route::delete('orders/{id}', array('as' => 'DeleteOrders', 'uses' => 'OrdersController@destroy'));
 
-    //for Orders
+    //for Products
     Route::get('products/', array('as' => 'ListProducts', 'uses' => 'ProductsController@index'));
     Route::get('products/create', array('as' => 'CreateProducts', 'uses' => 'ProductsController@create'));
     Route::get('products/{id}', array('as' => 'ShowProducts', 'uses' => 'ProductsController@show'));
