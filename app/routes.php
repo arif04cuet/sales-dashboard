@@ -37,7 +37,7 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
 
     #getting writer and qc list for order detail page
     Route::get('writerqclist', array('as' => 'writerQcList', 'uses' => 'OrdersController@getWriterQc'));
-    Route::get('assign-writer-qc/{id}', array('as' => 'assignWriterQc', 'uses' => 'OrdersController@assignWriterQc'));
+    Route::post('order/{id}/assign-writer-qc', array('as' => 'assignWriterQc', 'uses' => 'OrdersController@assignWriterQc'));
 
 });
 Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::get('syntara::config.uri')), function () {
