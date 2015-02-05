@@ -133,6 +133,7 @@ class OrdersController extends BaseController
     {
         $orders = Order::findOrFail($id);
         $this->layout = View::make('orders.details')->with('orders', $orders);
+        $this->layout->type = array(4 => 'Writer', 5 => 'Qcs');
         $this->layout->title = 'Orders Details';
         $this->layout->breadcrumb = array(
             array(
@@ -147,7 +148,7 @@ class OrdersController extends BaseController
             ),
             array(
                 'title' => 'Details',
-                'link' => URL::route('DetailsOrders',$id),
+                'link' => URL::route('DetailsOrders', $id),
                 'icon' => 'glyphicon-eye-open'
             ),
         );
@@ -190,28 +191,36 @@ class OrdersController extends BaseController
         $col = Order::orderAllowedCol($userType);
         return Datatable::collection(Order::all($col))
             ->showColumns($col)
-            ->addColumn('model',function($model){
-                return '<a href="'.URL::route('DetailsOrders',$model->id).'">Details</a>';
+            ->addColumn('model', function ($model) {
+                return '<a href="' . URL::route('DetailsOrders', $model->id) . '">Details</a>';
             })
             ->searchColumns($col)
             ->orderColumns($col)
             ->make();
     }
 
-    public function getWriterQc(){
+    public function getWriterQc()
+    {
 
-        switch($_GET['type']){
-            case 0:             # for writers
-                return array('1' => 'Writer 1', '2' => 'Writer 2');
-                break;
-            case 1:             # for QC
-                return array('1' => 'QC 1', '2' => 'QC 2', '3'=>'QC 3');
-                break;
+        $groupId = Input::get('type');
+        $group = Sentry::getGroupProvider()->findById($groupId);
+        $list = Sentry::getUserProvider()->findAllInGroup($group);
+        $users = array();
+        foreach ($list as $user) {
+            $users[$user->getId()] = $user->first_name . ' ' . $user->last_name;
         }
+        return $users;
     }
 
-    public function assignWriterQc($id){
-        return Input::all();
+    public function assignWriterQc($id)
+    {
+        $orderId = $id;
+
+        //create message
+
+        //send email to writer
+
+        //changes order status
     }
 
 }
