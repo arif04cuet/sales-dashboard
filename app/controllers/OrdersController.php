@@ -88,6 +88,10 @@ class OrdersController extends BaseController
             $order->amount_paid = $data['amount_paid'];
             $order->outstanding = $data['sale_price'] - $data['amount_paid'];
             $order->status = 'TA';
+            $order->instructions = $data['instructions'];
+            $order->course_outline = $data['course_outline'];
+            $order->lecture_notes = $data['lecture_notes'];
+            $order->additional_materials = $data['additional_materials'];
 
             $data = array_merge($order->toArray(), Sentry::getUser()->toArray());
             if ($order->save()) {
@@ -192,6 +196,23 @@ class OrdersController extends BaseController
             ->searchColumns($col)
             ->orderColumns($col)
             ->make();
+    }
+
+    public function getWriterQc(){
+
+        switch($_GET['type']){
+            case 0:             # for writers
+                return array('1' => 'Writer 1', '2' => 'Writer 2');
+                break;
+            case 1:             # for QC
+                return array('1' => 'QC 1', '2' => 'QC 2', '3'=>'QC 3');
+                break;
+        }
+    }
+
+    public function assignWriterQc($id){
+        $type = Input::all();
+        $orders = Order::findOrFail($id);
     }
 
 }

@@ -35,6 +35,10 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
     Route::post('products', array('as' => 'StoreProducts', 'uses' => 'ProductsController@store'));
     Route::put('products/{id}', array('as' => 'UpdateProducts', 'uses' => 'ProductsController@update'));
 
+    #getting writer and qc list for order detail page
+    Route::get('writerqclist', array('as' => 'writerQcList', 'uses' => 'OrdersController@getWriterQc'));
+    Route::post('assign-writer-qc/{id}', array('as' => 'assignWriterQc', 'uses' => 'OrdersController@assignWriterQc'));
+
 });
 Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::get('syntara::config.uri')), function () {
     /*//for QCs

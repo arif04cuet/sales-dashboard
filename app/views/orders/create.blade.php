@@ -53,6 +53,30 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            {{ Form::label('instructions', 'Instructions', array('class'=>'col-md-2 control-label')) }}
+                            <div class="col-md-5">
+                                {{ Form::textarea('instructions', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ Form::label('course_outline', 'Course Outline', array('class'=>'col-md-2 control-label')) }}
+                            <div class="col-md-5">
+                                {{ Form::textarea('course_outline', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ Form::label('lecture_notes', 'Lecture Notes', array('class'=>'col-md-2 control-label')) }}
+                            <div class="col-md-5">
+                                {{ Form::textarea('lecture_notes', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ Form::label('additional_materials', 'Additional Materials', array('class'=>'col-md-2 control-label')) }}
+                            <div class="col-md-5">
+                                {{ Form::textarea('additional_materials', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="col-md-offset-2 col-md-5">
                                 <button class="btn btn-danger btn-sm" type="submit"><i
                                             class="glyphicon glyphicon-ok-sign"></i> Save

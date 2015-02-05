@@ -21,6 +21,6 @@ return array(
     'user-activation-object' => 'Account activation',
 
      /* After Create an order send email to this address*/
-    'new-order-manager' => 'arif04cuet@gmail.com',
+    'new-order-manager' => 'msipersonal.bd@gmail.com',
     'new-order-manager-subject' => 'New Order has been placed !',
 );

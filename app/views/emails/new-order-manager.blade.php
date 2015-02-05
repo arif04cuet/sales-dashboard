@@ -45,7 +45,7 @@
 <div style="margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; margin-top: 10px;">
     <div style="border: 1px solid #d2d4d8; border-radius: 3px; margin-bottom: 15px;">
         <div style="background: none repeat scroll 0 0 #f7f8f9; border-bottom: 1px solid #d9d9dd; border-radius: 2px 2px 0 0; height: 40px;">
-            <span style="color: #727476; display: inline-block; font-weight: 500; padding: 10px 15px;"><strong>User</strong></span>
+            <span style="color: #727476; display: inline-block; font-weight: 500; padding: 10px 15px;"><strong>Salesman</strong></span>
         </div>
         <div style="background: none repeat scroll 0 0 #fff; border-radius: 0 0 2px 2px; padding: 10px;">
             <table style="width:100%; border-collapse: collapse; color: #5E6B72;">
