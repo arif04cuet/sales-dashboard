@@ -211,8 +211,7 @@ class OrdersController extends BaseController
     }
 
     public function assignWriterQc($id){
-        $type = Input::all();
-        $orders = Order::findOrFail($id);
+        return Input::all();
     }
 
 }

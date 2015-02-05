@@ -127,12 +127,11 @@
                         </div>
                         <div class="col-md-4">
                             {{ Form::label('comment', 'Comment') }}
-                            {{ Form::text('comment', null, array('class'=>'form-control',
-                            'placeholder'=>'Comment', 'required')) }}
+                            {{ Form::textarea('comment', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
                         </div>
                         <div class="col-md-2">
                             {{ Form::label('save', '&nbsp;') }}
-                            <button class="btn btn-danger form-control" type="submit"><i
+                            <button class="btn btn-danger form-control" id="assign-btn" type="button"><i
                                     class="glyphicon glyphicon-ok-sign"></i> Send
                             </button>
                         </div>
@@ -176,6 +175,21 @@
 
         $('#type').change(function(){
             setUser();
+        });
+
+        $('#assign-btn').click(function(){
+            $.ajax({
+                type: "GET",
+                url: "{{route('assignWriterQc',$orders->id)}}",
+                data: {
+                    type: $('#type').val(),
+                    user: $('#user').val(),
+                    comment: $('#comment').val()
+                },
+                success: function(data){
+                    alert(JSON.stringify(data));
+                }
+            });
         });
     });
 </script>
