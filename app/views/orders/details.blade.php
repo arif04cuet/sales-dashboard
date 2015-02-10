@@ -122,16 +122,14 @@
                             </div>
                             <div class="col-md-3">
                                 {{ Form::label('user', 'User') }}
-                                {{ Form::select('user[]', array(''), null, array('id'=>'user','class'=>'form-control',
-                                'multiple')) }}
+                                {{ Form::select('user', array(''), null, array('id'=>'user','class'=>'form-control')) }}
                             </div>
                             <div class="col-md-4">
                                 {{ Form::label('comment', 'Comment') }}
                                 {{ Form::textarea('comment', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
                             </div>
                             <div class="col-md-2">
-                                {{ Form::label('save', '&nbsp;') }}
-                                <button class="btn btn-danger form-control" id="assign-btn" type="submit"><i
+                                <button style="margin-top: 25px" class="btn btn-danger" id="assign-btn" type="submit"><i
                                             class="glyphicon glyphicon-ok-sign"></i> Send
                                 </button>
                             </div>
@@ -159,13 +157,13 @@
                     type: "GET",
                     url: "{{route('writerQcList')}}",
                     data: {
-                        type: $('#type').val()
+                        type: $('#type').text()
                     },
                     success: function (data) {
                         $("#user").html('');
                         $.each(data, function (id, user) {
                             option = "<option value=" + id + ">" + user + "</option>"
-                            $("#user").append(option);
+                            $("#user").append(otption);
                         });
                     }
                 });
@@ -175,21 +173,6 @@
 
             $('#type').change(function () {
                 setUser();
-            });
-
-            $('#assign-btn').click(function () {
-                $.ajax({
-                    type: "GET",
-                    url: "{{route('assignWriterQc',$orders->id)}}",
-                    data: {
-                        type: $('#type').val(),
-                        user: $('#user').val(),
-                        comment: $('#comment').val()
-                    },
-                    success: function (data) {
-                        alert(JSON.stringify(data));
-                    }
-                });
             });
 
             //assign user by ajax
