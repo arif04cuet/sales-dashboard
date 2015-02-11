@@ -3,13 +3,16 @@
 <head>
     <meta charset="utf-8">
 </head>
-<body style="color: #333; font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857;">
+<body style="color: #333; font-family: " Helvetica Neue
+",Helvetica,Arial,sans-serif; font-size: 14px; line-height: 1.42857;">
 <div style="margin-left: auto; margin-right: auto; padding-left: 15px; padding-right: 15px; margin-top: 10px;">
     <h3>Order has been placed!</h3>
     <br/>
+
     <div style="border: 1px solid #d2d4d8; border-radius: 3px; margin-bottom: 15px;">
         <div style="background: none repeat scroll 0 0 #f7f8f9; border-bottom: 1px solid #d9d9dd; border-radius: 2px 2px 0 0; height: 40px;">
-            <span style="color: #727476; display: inline-block; font-weight: 500; padding: 10px 15px;"><strong>Order Information</strong></span>
+            <span style="color: #727476; display: inline-block; font-weight: 500; padding: 10px 15px;"><strong>Order
+                    Information</strong></span>
         </div>
         <div style="background: none repeat scroll 0 0 #fff; border-radius: 0 0 2px 2px; padding: 10px;">
             <table style="width:100%; border-collapse: collapse; color: #5E6B72;">
@@ -34,6 +37,18 @@
                 <tr>
                     <td style="padding: 5px;"><strong>Outstanding</strong></td>
                     <td style="padding: 5px;">{{$outstanding}}</td>
+                    <td style="padding: 5px;"><strong>Instructions</strong></td>
+                    <td style="padding: 5px;">{{$instructions}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px;"><strong>Course Outline</strong></td>
+                    <td style="padding: 5px;">{{$course_outline}}</td>
+                    <td style="padding: 5px;"><strong>Lecture Notes</strong></td>
+                    <td style="padding: 5px;">{{$lecture_notes}}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px;"><strong>Additional Materials</strong></td>
+                    <td style="padding: 5px;">{{$additional_materials}}</td>
                     <td style="padding: 5px;"><strong></strong></td>
                     <td style="padding: 5px;"></td>
                 </tr>
@@ -59,5 +74,6 @@
         </div>
     </div>
 </div>
+<p>You can check order here <a href="<?php echo URL::route('DetailsOrders', array('id' => $id))?>" title="View Order">View Order</a></p>
 </body>
 </html>

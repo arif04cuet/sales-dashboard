@@ -92,6 +92,8 @@ class OrdersController extends BaseController
             $order->course_outline = $data['course_outline'];
             $order->lecture_notes = $data['lecture_notes'];
             $order->additional_materials = $data['additional_materials'];
+            $order->salesman_id = Sentry::getUser()->getId();
+            $order->product_name = $data['product_name'];
 
             $data = array_merge($order->toArray(), Sentry::getUser()->toArray());
             if ($order->save()) {

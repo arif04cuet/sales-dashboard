@@ -5,6 +5,10 @@
 /vendor
 composer.phar
 composer.lock
+.bowerrc
+.gitattributes
+_ide_helper.php
+CONTRIBUTING.md
 .env.*.php
 .env.php
 .DS_Store

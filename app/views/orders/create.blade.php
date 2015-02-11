@@ -26,10 +26,17 @@
                                 'placeholder'=>'Sale Price', 'required')) }}
                             </div>
                         </div>
-                        <div class="form-group">
+                        {{--<div class="form-group">
                             {{ Form::label('product_list', 'Product List', array('class'=>'col-md-2 control-label')) }}
                             <div class="col-md-5">
                                 {{ Form::select('product_list', $products, null, array('class'=>'form-control')) }}
+                            </div>
+                        </div>--}}
+                        <div class="form-group">
+                            {{ Form::label('product_name', 'Product', array('class'=>'col-md-2 control-label')) }}
+                            <div class="col-md-5">
+                                {{ Form::text('product_name', Input::old('product_name'), array('class'=>'form-control',
+                                'placeholder'=>'Product Name', 'required')) }}
                             </div>
                         </div>
                         <div class="form-group">
@@ -91,10 +98,10 @@
     </div>
     <script type="text/javascript">
         $('.datepicker').datepicker({
-         format: 'dd-mm-yyyy',
-         todayBtn: "linked",
-         todayHighlight: true
-         });
+            format: 'dd-mm-yyyy',
+            todayBtn: "linked",
+            todayHighlight: true
+        });
 
         $('#sale_price').keyup(function () {
             var outstanding = $('#sale_price').val() - $('#amount_paid').val();
