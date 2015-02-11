@@ -215,12 +215,40 @@ class OrdersController extends BaseController
     public function assignWriterQc($id)
     {
         $orderId = $id;
+        $order = Order::find($orderId);
+        $userId = Input::get('user');
+        $user = Sentry::getUserProvider()->findById($userId);
 
+        $msg = 'You have an invitation on order <a href="' . URL::route('ShowOrders', ['id' => $orderId]) . '">click</a><br/>' . Input::get('comment');
         //create message
-
+        Message::create([
+            'to' => $userId,
+            'from' => Sentry::getUser()->getId(),
+            'msg' => $msg
+        ]);
         //send email to writer
+        $data = ['order' => $order];
+        if (Input::get('type') == 'Writer') {
+            $order->writer_id = $userId;
+            $order->status = 'AC';
+            $emailTemplate = 'emails.invitation-to-writer';
+        } elseif (Input::get('type') == 'Qcs') {
+            $order->qc_id = $userId;
+            $order->status = 'QC';
+            $emailTemplate = 'emails.assign-to-qc';
+        }
 
-        //changes order status
+        if ($order->save()) {
+            // send email to manager
+            Mail::queue($emailTemplate, $data, function ($message) use ($user) {
+                $message->from(Config::get('syntara::mails.email'), Config::get('syntara::mails.contact'))
+                    ->subject('You have an invitation');
+                $message->to($user->getEmail());
+            });
+            //Session::flash('message', 'Email has been send to Manager.');
+        }
+        echo json_encode(['success' => 1, 'msg' => 'Ok']);
+        exit;
     }
 
 }
