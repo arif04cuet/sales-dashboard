@@ -81,27 +81,16 @@
             <div class="col-md-12">
                 <section class="module">
                     <div class="module-head">
-                        <b><strong>Assign Writer</strong></b>
+                        <b><strong>Invitations</strong></b>
                     </div>
-                    <div class="module-body" style="padding: 5">
-                        <?php if(!is_null($orders->writer)): ?>
-                        <table id="orders-details" class="table table-condensed table-responsive">
-                            <tbody>
-                            <tr>
-                                <td><label>Writer Name</label></td>
-                                <td><label>Status</label></td>
-                                <td><label>Date</label></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="module-body" style="padding: 5px">
+                        <?php if($orders->invitaions): ?>
+                        <div id="invitations">
+
+                        </div>
+
                         <?php else: ?>
-                        <table id="orders-details" class="table table-condensed table-responsive">
-                            <tbody>
-                            <tr>
-                                <td>No writer assign</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <p>No Invitation send yet</p>
                         <?php endif; ?>
                     </div>
                 </section>
@@ -113,7 +102,7 @@
                     <div class="module-head">
                         <b><strong>Order Assign</strong></b>
                     </div>
-                    <div class="module-body" style="padding: 5">
+                    <div class="module-body" style="padding: 5px">
                         {{ Form::open(array('url'=>URL::route("assignWriterQc",$orders->id), 'class'=>'form-horizontal','id'=>'assignUser')) }}
                         <div class="form-group">
                             <div class="col-md-3">
@@ -157,14 +146,15 @@
                     type: "GET",
                     url: "{{route('writerQcList')}}",
                     data: {
-                        type: $('#type').text()
+                        type: $('#type').val()
                     },
                     success: function (data) {
-                        $("#user").html('');
-                        $.each(data, function (id, user) {
-                            option = "<option value=" + id + ">" + user + "</option>"
-                            $("#user").append(otption);
+                        var $select = $('#user');
+                        $select.find('option').remove();
+                        $.each(data, function (key, value) {
+                            $select.append('<option value=' + key + '>' + value + '</option>');
                         });
+
                     }
                 });
             }
@@ -178,15 +168,37 @@
             //assign user by ajax
             $('#assign-btn').click(function (e) {
                 e.preventDefault();
+                var $button = $(this);
+                $button.text('Working..').prop("disabled", true);
                 $.ajax({
                     type: "POST",
                     url: "<?php echo URL::route('assignWriterQc',array('id'=>$orders->id))?>",
                     data: $('#assignUser').serialize(),
                     success: function (data) {
-                        alert(JSON.stringify(data));
+                        $button.text('Send').prop("disabled", false);
+                        $('#assignUser')[0].reset();
                     }
                 });
             });
+
+            //delete invitation
+            $('#del-invitation').click(function (e) {
+                e.preventDefault();
+                var $row = $(this).parent().parent();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo URL::route('deleteInvitaion', array('id' => $orders->id, 'invitaion_id' => $invitation->id))?>",
+                    success: function (data) {
+                        if (data == '1') {
+                            $row.remove();
+                            alert('Invitation has been deleted');
+                        }
+                        else
+                            alert('an error occured');
+                    }
+                });
+            });
+
         });
     </script>
 @stop

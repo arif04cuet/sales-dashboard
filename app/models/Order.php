@@ -43,4 +43,13 @@ class Order extends \Eloquent
             'C' => 'the project is complete'
         );
     }
+
+    //relations
+
+    public function invitaions()
+    {
+        return $this->hasMany('Invitation');
+    }
+
+
 }

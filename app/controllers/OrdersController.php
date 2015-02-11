@@ -133,9 +133,11 @@ class OrdersController extends BaseController
 
     public function details($id)
     {
+
         $orders = Order::findOrFail($id);
+
         $this->layout = View::make('orders.details')->with('orders', $orders);
-        $this->layout->type = array(4 => 'Writer', 5 => 'Qcs');
+        $this->layout->type = [0 => 'Select', 4 => 'Writer', 5 => 'Qcs'];
         $this->layout->title = 'Orders Details';
         $this->layout->breadcrumb = array(
             array(
@@ -229,23 +231,32 @@ class OrdersController extends BaseController
             'msg' => $msg
         ]);
         //send email to writer
-        $data = ['order' => $order];
-        if (Input::get('type') == 'Writer') {
-            $order->writer_id = $userId;
+        $data = array();
+        if (Input::get('type') == '4') {
+            //$order->writer_id = $userId;
             $order->status = 'AC';
             $emailTemplate = 'emails.invitation-to-writer';
-        } elseif (Input::get('type') == 'Qcs') {
-            $order->qc_id = $userId;
+        } elseif (Input::get('type') == '5') {
+            //$order->qc_id = $userId;
             $order->status = 'QC';
             $emailTemplate = 'emails.assign-to-qc';
         }
+
+        //add to invitation table
+        Invitation::create([
+            'order_id' => $orderId,
+            'user_id' => $userId
+        ]);
+
+        $data['name'] = $user->first_name . ' ' . $user->last_name;
+        $data['id'] = $orderId;
 
         if ($order->save()) {
             // send email to manager
             Mail::queue($emailTemplate, $data, function ($message) use ($user) {
                 $message->from(Config::get('syntara::mails.email'), Config::get('syntara::mails.contact'))
                     ->subject('You have an invitation');
-                $message->to($user->getEmail());
+                $message->to($user->email);
             });
             //Session::flash('message', 'Email has been send to Manager.');
         }
@@ -253,4 +264,25 @@ class OrdersController extends BaseController
         exit;
     }
 
+    public function getInvitations($orderId)
+    {
+        $order = Order::find($orderId);
+        $html = View::make('invitations', ['order' => $order])->render();
+        echo $html;
+        exit;
+    }
+
+    public function deleteInvitaion($orderId, $invitationId)
+    {
+        $invitationId = Invitation::find($invitationId);
+        $data = array();
+        if ($invitationId->delete())
+            $data['success'] = 1;
+        else
+            $data['success'] = 0;
+
+        echo $data['success'];
+        exit;
+
+    }
 }
