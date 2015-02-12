@@ -135,13 +135,7 @@ class OrdersController extends BaseController
     {
 
         $order = Order::findOrFail($id);
-        //$order = Order::find($orderId);
-        echo '<pre>';
-        print_r($order);
-        $html = View::make('orders.invitations', ['order' => $order])->render();
-        echo $html;
-        exit;
-        $this->layout = View::make('orders.details')->with('orders', $orders);
+        $this->layout = View::make('orders.details')->with('orders', $order);
         $groups = array('Select');
         array_map(function ($item) use (&$groups) {
             if ($item->name == 'Writer' || $item->name == 'QC')
@@ -149,6 +143,7 @@ class OrdersController extends BaseController
         }, Sentry::getGroupProvider()->findAll());
 
         $this->layout->type = $groups;
+        $this->layout->orderFields = Order::orderAllowedCol(Utility::getUserGroup());
         $this->layout->title = 'Orders Details';
         $this->layout->breadcrumb = array(
             array(

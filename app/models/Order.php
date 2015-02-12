@@ -15,18 +15,21 @@ class Order extends \Eloquent
         switch ($userType) {
             case 'Admin': //for admin
                 $col = array('id', 'due_date', 'client', 'writer', 'status', 'sale_price', 'fee', 'amount_paid',
-                    'outstanding', 'percent', 'profit', 'no_of_page');
+                    'outstanding', 'percent', 'profit', 'no_of_page','product_name','instructions','course_outline','lecture_notes','additional_materials');
                 break;
 
             case 'Manager': //for manager
-                $col = array('id', 'due_date', 'client', 'writer', 'status', 'fee');
+                $col = array('id', 'due_date', 'client', 'writer', 'status', 'fee','product_name','instructions','course_outline','lecture_notes','additional_materials');
                 break;
 
             case 'Sales': //for salesman
-                $col = array('id', 'due_date', 'client', 'status', 'sale_price', 'amount_paid', 'outstanding');
+                $col = array('id', 'due_date', 'client', 'status', 'sale_price', 'amount_paid', 'outstanding','product_name','instructions','course_outline','lecture_notes');
                 break;
             case 'Writer':
-                $col = array('id', 'due_date', 'client', 'status', 'sale_price', 'amount_paid', 'outstanding');
+                $col = array('id', 'due_date', 'client', 'status', 'sale_price', 'amount_paid', 'outstanding','product_name','instructions','course_outline','lecture_notes');
+                break;
+            case 'QC':
+                $col = array('id', 'due_date', 'client', 'status', 'sale_price', 'amount_paid', 'outstanding','product_name','instructions','course_outline','lecture_notes');
                 break;
         }
         return $col;
@@ -46,7 +49,7 @@ class Order extends \Eloquent
 
     //relations
 
-    public function invitaions()
+    public function invitations()
     {
         return $this->hasMany('Invitation');
     }

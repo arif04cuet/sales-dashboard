@@ -26,4 +26,7 @@ class Invitation extends \Eloquent
     {
         return $this->belongsTo('User');
     }
+    public function getType(){
+        return 'ok';
+    }
 }

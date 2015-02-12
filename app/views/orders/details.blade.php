@@ -6,73 +6,18 @@
             <div class="col-md-12">
                 <section class="module">
                     <div class="module-head">
-                        <b><strong>Order Information</strong></b>
+                        <b><strong>Order Details</strong></b>
                     </div>
-                    <div class="module-body" style="padding: 5">
-                        <table id="orders-details" class="table table-condensed table-responsive">
-                            <tbody>
-                            <tr>
-                                <td><label>Order Id</label></td>
-                                <td>{{ $orders->id }}</td>
-                                <td><label>Order Date</label></td>
-                                <td><?php echo date('d M Y h:i:s A', strtotime(str_replace('-', '/', $orders->order_date))); ?></td>
-                            </tr>
-                            <tr>
-                                <td><label>Client</label></td>
-                                <td>{{ $orders->client }}</td>
-                                <td><label>Due Date</label></td>
-                                <td><?php echo date('d M Y h:i:s A', strtotime(str_replace('-', '/', $orders->due_date))); ?></td>
-                            </tr>
-                            <tr>
-                                <td><label>Percent</label></td>
-                                <td>{{ $orders->percent }}</td>
-                                <td><label>Status</label></td>
-                                <td>{{ $orders->status }}</td>
-                            </tr>
-                            <tr>
-                                <td><label>Fee</label></td>
-                                <td>{{ $orders->fee }}</td>
-                                <td><label>Sale Price</label></td>
-                                <td>{{ $orders->sale_price }}</td>
-                            </tr>
-                            <tr>
-                                <td><label>No of Page</label></td>
-                                <td>{{ $orders->no_of_page }}</td>
-                                <td><label>Amount Paid</label></td>
-                                <td>{{ $orders->amount_paid }}</td>
-                            </tr>
-                            <tr>
-                                <td><label>Profit</label></td>
-                                <td>{{ $orders->profit }}</td>
-                                <td><label>Outstanding</label></td>
-                                <td>{{ $orders->outstanding }}</td>
-                            </tr>
-                            <tr>
-                                <td><label>Instruction</label></td>
-                                <td>{{ $orders->instructions }}</td>
-                                <td><label>Created Date</label></td>
-                                <td><?php echo date('d M Y h:i:s A', strtotime(str_replace('-', '/', $orders->created_at))); ?></td>
-                            </tr>
-                            <tr>
-                                <td><label>Course Outline</label></td>
-                                <td>{{ $orders->course_outline }}</td>
-                                <td><label>Updated Date</label></td>
-                                <td><?php echo date('d M Y h:i:s A', strtotime(str_replace('-', '/', $orders->updated_at))); ?></td>
-                            </tr>
-                            <tr>
-                                <td><label>Lecture Notes</label></td>
-                                <td>{{ $orders->lecture_notes }}</td>
-                                <td><label></label></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><label>Additional Materials</label></td>
-                                <td>{{ $orders->additional_materials }}</td>
-                                <td><label></label></td>
-                                <td></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="module-body" style="padding: 5px">
+                        <div id="orderDetails">
+                            <ul class="list-inline">
+                                <?php foreach($orderFields as $field):?>
+                                <li class="col-md-2"><label for=""><?php echo str_replace('_', ' ', strtoupper($field))?></label>
+                                    : <?php echo $orders->{$field}?></li>
+                                <?php endforeach;?>
+                                    <br style="clear: both"/>
+                            </ul>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -134,6 +79,7 @@
         #orders-details tbody tr td {
             border-top: 0;
         }
+
     </style>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -173,15 +119,16 @@
                         loadInvitation('invitations');
                         $button.text('Send').prop("disabled", false);
                         $('#assignUser')[0].reset();
+                        alert('Invitation has been sent successfully')
                     }
                 });
             });
 
             //delete invitation
-            $('#del-invitation').click(function (e) {
+            $(document).on('click', '#del-invitation', function (e) {
                 e.preventDefault();
                 var $row = $(this).parent().parent();
-                var $url = '';
+                var $url = $(this).attr('href');
 
                 $.ajax({
                     type: "POST",

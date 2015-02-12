@@ -35,4 +35,14 @@ class Utility
             return ucfirst(str_replace('_', ' ', $value));
         }, $data);
     }
+
+    public static function getUserGroup()
+    {
+        $groups = Sentry::getUser()->getGroups()->toArray();
+        /* array_map(function ($item) use (&$groups) {
+             $groups[$item['id']] = $item['name'];
+         }, Sentry::getUser()->getGroups()->toArray());*/
+
+        return $groups[0]['name'];
+    }
 } 

@@ -8,14 +8,14 @@
         <td><label>Date</label></td>
         <td><label>Action</label></td>
     </tr>
-    <?php foreach($order->invitaions as $invitation):?>
+    <?php foreach($order->invitations as $invitation):?>
     <tr>
         <td><?php echo $invitation->user->first_name . ' ' . $invitation->user->last_name?></td>
-        <td><label>Type</label></td>
+        <td><?php echo $invitation->getType();?></td>
         <td><?php echo $invitation->getStatus();?></td>
         <td><?php echo $invitation->created_at;?></td>
         <td>
-            <a id="del-invitation"
+            <a class="btn btn-danger" id="del-invitation"
                href="<?php echo URL::route('deleteInvitaion', array('id' => $order->id, 'invitaion_id' => $invitation->id))?>">Delete</a>
         </td>
     </tr>
