@@ -84,14 +84,11 @@
                         <b><strong>Invitations</strong></b>
                     </div>
                     <div class="module-body" style="padding: 5px">
-                        <?php if($orders->invitaions): ?>
+
                         <div id="invitations">
 
                         </div>
 
-                        <?php else: ?>
-                        <p>No Invitation send yet</p>
-                        <?php endif; ?>
                     </div>
                 </section>
             </div>
@@ -159,8 +156,6 @@
                 });
             }
 
-            setUser();
-
             $('#type').change(function () {
                 setUser();
             });
@@ -175,6 +170,7 @@
                     url: "<?php echo URL::route('assignWriterQc',array('id'=>$orders->id))?>",
                     data: $('#assignUser').serialize(),
                     success: function (data) {
+                        loadInvitation('invitations');
                         $button.text('Send').prop("disabled", false);
                         $('#assignUser')[0].reset();
                     }
@@ -185,9 +181,11 @@
             $('#del-invitation').click(function (e) {
                 e.preventDefault();
                 var $row = $(this).parent().parent();
+                var $url = '';
+
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo URL::route('deleteInvitaion', array('id' => $orders->id, 'invitaion_id' => $invitation->id))?>",
+                    url: $url,
                     success: function (data) {
                         if (data == '1') {
                             $row.remove();
@@ -198,6 +196,20 @@
                     }
                 });
             });
+
+            //Load Invitations by ajax
+            loadInvitation('invitations');
+            function loadInvitation($id) {
+                $('.ajax-loader').show();
+                $.ajax({
+                    type: "GET",
+                    url: "<?php echo URL::route('orderInvitations',array('id'=>$orders->id))?>",
+                    success: function (data) {
+                        $('#' + $id).empty().html(data);
+                        $('.ajax-loader').hide();
+                    }
+                });
+            }
 
         });
     </script>

@@ -134,10 +134,21 @@ class OrdersController extends BaseController
     public function details($id)
     {
 
-        $orders = Order::findOrFail($id);
-
+        $order = Order::findOrFail($id);
+        //$order = Order::find($orderId);
+        echo '<pre>';
+        print_r($order);
+        $html = View::make('orders.invitations', ['order' => $order])->render();
+        echo $html;
+        exit;
         $this->layout = View::make('orders.details')->with('orders', $orders);
-        $this->layout->type = [0 => 'Select', 4 => 'Writer', 5 => 'Qcs'];
+        $groups = array('Select');
+        array_map(function ($item) use (&$groups) {
+            if ($item->name == 'Writer' || $item->name == 'QC')
+                $groups[$item->id] = $item->name;
+        }, Sentry::getGroupProvider()->findAll());
+
+        $this->layout->type = $groups;
         $this->layout->title = 'Orders Details';
         $this->layout->breadcrumb = array(
             array(
@@ -222,7 +233,7 @@ class OrdersController extends BaseController
         $order = Order::find($orderId);
         $userId = Input::get('user');
         $user = Sentry::getUserProvider()->findById($userId);
-
+        $userGroup = Sentry::getGroupProvider()->findById(Input::get('type'));
         $msg = 'You have an invitation on order <a href="' . URL::route('ShowOrders', ['id' => $orderId]) . '">click</a><br/>' . Input::get('comment');
         //create message
         Message::create([
@@ -232,11 +243,11 @@ class OrdersController extends BaseController
         ]);
         //send email to writer
         $data = array();
-        if (Input::get('type') == '4') {
+        if ($userGroup->name == 'Writer') {
             //$order->writer_id = $userId;
             $order->status = 'AC';
             $emailTemplate = 'emails.invitation-to-writer';
-        } elseif (Input::get('type') == '5') {
+        } elseif ($userGroup->name == 'QC') {
             //$order->qc_id = $userId;
             $order->status = 'QC';
             $emailTemplate = 'emails.assign-to-qc';
@@ -267,7 +278,7 @@ class OrdersController extends BaseController
     public function getInvitations($orderId)
     {
         $order = Order::find($orderId);
-        $html = View::make('invitations', ['order' => $order])->render();
+        $html = View::make('orders.invitations', ['order' => $order])->render();
         echo $html;
         exit;
     }

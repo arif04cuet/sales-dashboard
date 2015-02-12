@@ -1,3 +1,4 @@
+<?php if($order->invitations):?>
 <table id="orders-invitation" class="table table-condensed table-responsive table-bordered">
     <tbody>
     <tr>
@@ -15,10 +16,14 @@
         <td><?php echo $invitation->created_at;?></td>
         <td>
             <a id="del-invitation"
-               href="">Delete</a>
+               href="<?php echo URL::route('deleteInvitaion', array('id' => $order->id, 'invitaion_id' => $invitation->id))?>">Delete</a>
         </td>
     </tr>
     <?php endforeach; ?>
 
     </tbody>
 </table>
+<?php else: ?>
+<p>No Invitation send yet</p>
+<?php endif; ?>
+

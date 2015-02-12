@@ -20,6 +20,9 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
     Route::get('orders/datatable', array('as' => 'orders.datatable', 'uses' => 'OrdersController@datatable'));
     Route::post('orders', array('as' => 'StoreOrders', 'uses' => 'OrdersController@store'));
     Route::put('orders/{id}', array('as' => 'UpdateOrders', 'uses' => 'OrdersController@update'));
+    Route::post('order/{id}/assign-writer-qc', array('as' => 'assignWriterQc', 'uses' => 'OrdersController@assignWriterQc'));
+    Route::post('order/{id}/invitation/{invitaion_id}', array('as' => 'deleteInvitaion', 'uses' => 'OrdersController@deleteInvitaion'));
+    Route::get('order/{id}/invitation', array('as' => 'orderInvitations', 'uses' => 'OrdersController@getInvitations'));
 
     //for Products
     Route::get('products/datatable', array('as' => 'products.datatable', 'uses' => 'ProductsController@datatable'));
@@ -28,8 +31,7 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
 
     #getting writer and qc list for order detail page
     Route::get('writerqclist', array('as' => 'writerQcList', 'uses' => 'OrdersController@getWriterQc'));
-    Route::post('order/{id}/assign-writer-qc', array('as' => 'assignWriterQc', 'uses' => 'OrdersController@assignWriterQc'));
-    Route::post('order/{id}/invitation/{invitaion_id}', array('as' => 'deleteInvitaion', 'uses' => 'OrdersController@deleteInvitaion'));
+
 
 });
 Route::group(array('before' => 'basicAuth|hasPermissions', 'prefix' => Config::get('syntara::config.uri')), function () {

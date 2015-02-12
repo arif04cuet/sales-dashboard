@@ -5,7 +5,7 @@ return array(
         'create' => array(
                 'email' => array('required', 'email'),
                 'pass' => array('required', 'min:6', 'max:255'),
-                'username' => array('required', 'min:3', 'max:255', 'alpha'),
+                'username' => array('required', 'min:2', 'max:255', 'alpha'),
                 'last_name' => array('min:3', 'max:255', 'alpha_dash'),
                 'first_name' => array('min:3', 'max:255', 'alpha_dash'),
             ),
@@ -23,7 +23,7 @@ return array(
             ),
     ),
     'group' => array(
-        'groupname' => array('required', 'min:3', 'max:16', 'alpha'),
+        'groupname' => array('required', 'min:2', 'max:16', 'alpha'),
     ),
     'permission' => array(
         'name' => array('required', 'min:3', 'max:100'),
