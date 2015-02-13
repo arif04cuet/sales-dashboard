@@ -1,8 +1,8 @@
 @extends(Config::get('syntara::views.master'))
 @section('content')
-<link rel="stylesheet" type="text/css" href="/bower_components/DataTables/media/css/jquery.dataTables.css"
+<link rel="stylesheet" type="text/css" href="{{ asset('bower_components/DataTables/media/css/jquery.dataTables.css') }}"
       xmlns="http://www.w3.org/1999/html">
-<script type="text/javascript" src="/bower_components/DataTables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="{{ asset('bower_components/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 <div class="container">
     <div class="row">
         <div class="col-md-12 text-right">

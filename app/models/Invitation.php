@@ -24,9 +24,13 @@ class Invitation extends \Eloquent
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('Cartalyst\Sentry\Users\Eloquent\User');
     }
-    public function getType(){
-        return 'ok';
+
+    public function getUserType()
+    {
+        $group = $this->user->getGroups()->toArray();
+        return $group[0]['name'];
     }
+
 }

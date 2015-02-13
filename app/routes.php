@@ -21,8 +21,12 @@ Route::group(array('before' => 'basicAuth', 'prefix' => Config::get('syntara::co
     Route::post('orders', array('as' => 'StoreOrders', 'uses' => 'OrdersController@store'));
     Route::put('orders/{id}', array('as' => 'UpdateOrders', 'uses' => 'OrdersController@update'));
     Route::post('order/{id}/assign-writer-qc', array('as' => 'assignWriterQc', 'uses' => 'OrdersController@assignWriterQc'));
+    Route::post('order/{id}/upload-doc', array('as' => 'uploadDoc', 'uses' => 'OrdersController@uploadDoc'));
     Route::post('order/{id}/invitation/{invitaion_id}', array('as' => 'deleteInvitaion', 'uses' => 'OrdersController@deleteInvitaion'));
     Route::get('order/{id}/invitation', array('as' => 'orderInvitations', 'uses' => 'OrdersController@getInvitations'));
+    Route::post('order/{id}/invitation-process', array('as' => 'processInvitation', 'uses' => 'OrdersController@processInvitation'));
+    Route::get('order/{id}/documents', array('as' => 'documenList', 'uses' => 'OrdersController@documenList'));
+
 
     //for Products
     Route::get('products/datatable', array('as' => 'products.datatable', 'uses' => 'ProductsController@datatable'));

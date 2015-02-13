@@ -12,21 +12,72 @@
                         <div id="orderDetails">
                             <ul class="list-inline">
                                 <?php foreach($orderFields as $field):?>
-                                <li class="col-md-2"><label for=""><?php echo str_replace('_', ' ', strtoupper($field))?></label>
+                                <li class="col-md-3"><label
+                                            for=""><?php echo str_replace('_', ' ', strtoupper($field))?></label>
                                     : <?php echo $orders->{$field}?></li>
                                 <?php endforeach;?>
-                                    <br style="clear: both"/>
+                                <br style="clear: both"/>
                             </ul>
+
+                            <?php if($orders->isAcceptedBy(Utility::getUserGroup())):?>
+                            <div class="row action-buttons">
+                                <div class="col-md-2 col-md-offset-5">
+                                    <div class="btn-group">
+                                        <a class="btn btn-success" href="1">Accept</a>
+                                        <a class="btn btn-danger" href="2">Reject</a></div>
+                                </div>
+                            </div>
+                            <?php endif;?>
+
                         </div>
                     </div>
                 </section>
             </div>
         </div>
+
+        {{--//document uploads--}}
         <div class="row">
             <div class="col-md-12">
                 <section class="module">
                     <div class="module-head">
-                        <b><strong>Invitations</strong></b>
+                        <b><strong>Docs and Discussions</strong></b>
+                    </div>
+                    <div class="module-body" style="padding: 5px">
+                        {{ Form::open(array('url'=>URL::route("uploadDoc",$orders->id), 'class'=>'form-horizontal','id'=>'uploadDoc', 'files' => true)) }}
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                {{ Form::label('doc', 'File') }}
+                                {{ Form::file('doc',array('class'=>'form-control')) }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ Form::label('comment', 'Comment') }}
+                                {{ Form::textarea('comment', null, array('class'=>'form-control', 'rows'=>'2', 'cols'=>'10')) }}
+                            </div>
+                            <div class="col-md-2">
+                                <button style="margin-top: 25px" class="btn btn-danger" id="upload-btn" type="submit"><i
+                                            class="glyphicon glyphicon-ok-sign"></i> Submit
+                                </button>
+                            </div>
+                        </div>
+                        {{ Form::close() }}
+
+                        <div id="order-documents">
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+            </div>
+        </div>
+
+        <?php if(Utility::userIs('Manager') || Utility::userIs('Admin')):?>
+        <div class="row">
+            <div class="col-md-12">
+                <section class="module">
+                    <div class="module-head">
+                        <b><strong>All sent invitations</strong></b>
                     </div>
                     <div class="module-body" style="padding: 5px">
 
@@ -42,7 +93,7 @@
             <div class="col-md-12">
                 <section class="module">
                     <div class="module-head">
-                        <b><strong>Order Assign</strong></b>
+                        <b><strong>Assign Order to Writer/QC</strong></b>
                     </div>
                     <div class="module-body" style="padding: 5px">
                         {{ Form::open(array('url'=>URL::route("assignWriterQc",$orders->id), 'class'=>'form-horizontal','id'=>'assignUser')) }}
@@ -70,6 +121,8 @@
                 </section>
             </div>
         </div>
+        <?php endif;?>
+
     </div>
     <style>
         #orders-details {
@@ -97,6 +150,21 @@
                         $.each(data, function (key, value) {
                             $select.append('<option value=' + key + '>' + value + '</option>');
                         });
+
+                    }
+                });
+            }
+
+            //Load Documents by ajax
+            getDocuments('order-documents');
+            function getDocuments($id) {
+                $('.ajax-loader').show();
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('documenList',['id'=>$orders->id])}}",
+                    success: function (data) {
+                        $('#' + $id).empty().html(data);
+                        $('.ajax-loader').hide();
 
                     }
                 });
@@ -144,6 +212,28 @@
                 });
             });
 
+            // accept/reject invitation
+            $(document).on('click', '.action-buttons a', function (e) {
+                e.preventDefault();
+                var $action = $(this).attr('href');
+                var $url = "<?php echo URL::route('processInvitation',array('id'=>$orders->id))?>";
+                $url = $url + '?action=' + $action;
+                var $button = $(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: $url,
+                    success: function (data) {
+                        if (data.success == '1') {
+                            $button.hide();
+                            alert('Thanks for accepting the invitation');
+                            location.reload();
+                        }
+                        else
+                            alert('an error occured');
+                    }
+                });
+            });
             //Load Invitations by ajax
             loadInvitation('invitations');
             function loadInvitation($id) {

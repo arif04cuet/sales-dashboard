@@ -4,6 +4,7 @@ use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
+use Cartalyst\Sentry\Users\Eloquent;
 
 class User extends Eloquent implements UserInterface, RemindableInterface
 {
@@ -16,6 +17,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
      * @var string
      */
     protected $table = 'users';
+    public $test = 'asd';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -34,8 +36,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->hasMany('Message', 't0');
     }
 
-    public function invitaions()
+    public function invitations()
     {
         return $this->hasMany('Invitation');
     }
+
+    public function documents()
+    {
+        return $this->hasMany('Document');
+    }
+
+
 }

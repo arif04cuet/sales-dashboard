@@ -14,6 +14,7 @@
 App::before(function ($request) {
     // Clear view cache in sandbox (only) with every request
     if (App::environment() == 'local') {
+
         $cachedViewsDirectory = app('path.storage') . '/views/';
         $files = glob($cachedViewsDirectory . '*');
         foreach ($files as $file) {
@@ -21,21 +22,29 @@ App::before(function ($request) {
                 @unlink($file);
             }
         }
-    }
-
-    //Manage Permission
-
-    $permissions = Config::get('permissions');
-    foreach ($permissions as $key => $val) {
-        $permission = DB::table('permissions')->where('value', $val)->first();
-        if (!$permission) {
-            DB::table('permissions')->insert(
-                array('name' => $key, 'value' => $val, 'description' => $key)
-            );
+        //Manage Permission
+        $permissions = Config::get('permissions');
+        foreach ($permissions as $key => $val) {
+            $permission = DB::table('permissions')->where('value', $val)->first();
+            if (!$permission) {
+                DB::table('permissions')->insert(
+                    array('name' => $key, 'value' => $val, 'description' => $key)
+                );
+            }
+        }
+        //Save Default Groups
+        $groups = Config::get('groups.default');
+        $permissions = [];
+        foreach ($groups as $group) {
+            // create group
+            $exit = DB::table('groups')->where('name', $group)->first();
+            if (!$exit)
+                Sentry::getGroupProvider()->create(array(
+                    'name' => $group,
+                    'permissions' => $permissions,
+                ));
         }
     }
-
-
 });
 
 App::after(function ($request, $response) {
@@ -98,26 +107,19 @@ Route::filter('csrf', function () {
         throw new Illuminate\Session\TokenMismatchException;
     }
 });
-Route::filter('hasPermissions', function($route, $request, $userPermission = null)
-{
+Route::filter('hasPermissions', function ($route, $request, $userPermission = null) {
     if (Route::currentRouteNamed('putUser') && Sentry::getUser()->id == Request::segment(3) ||
-        Route::currentRouteNamed('showUser') && Sentry::getUser()->id == Request::segment(3))
-    {
-    }
-    else
-    {
-        if($userPermission === null)
-        {
-            $permissions = array_merge(Config::get('permissions'),Config::get('syntara::permissions'));
+        Route::currentRouteNamed('showUser') && Sentry::getUser()->id == Request::segment(3)
+    ) {
+    } else {
+        if ($userPermission === null) {
+            $permissions = array_merge(Config::get('permissions'), Config::get('syntara::permissions'));
             $permission = $permissions[Route::current()->getName()];
-        }
-        else
-        {
+        } else {
             $permission = $userPermission;
         }
 
-        if(!Sentry::getUser()->hasAccess($permission))
-        {
+        if (!Sentry::getUser()->hasAccess($permission)) {
             return Redirect::route('accessDenied');
         }
     }

@@ -11,7 +11,7 @@ return array(
      * Admin mail
      * use for mails
      */
-    'email' => 'mail@localhost',
+    'email' => 'arif04cuet2@gmail.com',
 
     /**
      * View for user activation email
@@ -21,6 +21,6 @@ return array(
     'user-activation-object' => 'Account activation',
 
      /* After Create an order send email to this address*/
-    'new-order-manager' => 'arif04cuet@gmail.com',
+    'new-order-manager' => 'arefinjomir@gmail.com',
     'new-order-manager-subject' => 'New Order has been placed !',
 );

@@ -135,6 +135,10 @@ class OrdersController extends BaseController
     {
 
         $order = Order::findOrFail($id);
+        if ($order->writer_id) {
+            $writer = Sentry::getUserProvider()->findById($order->writer_id);
+            $order->writer = $writer->first_name . ' ' . $writer->last_name;
+        }
         $this->layout = View::make('orders.details')->with('orders', $order);
         $groups = array('Select');
         array_map(function ($item) use (&$groups) {
@@ -143,7 +147,7 @@ class OrdersController extends BaseController
         }, Sentry::getGroupProvider()->findAll());
 
         $this->layout->type = $groups;
-        $this->layout->orderFields = Order::orderAllowedCol(Utility::getUserGroup());
+        $this->layout->orderFields = Order::orderAllowedCol(Utility::getUserGroup(), false);
         $this->layout->title = 'Orders Details';
         $this->layout->breadcrumb = array(
             array(
@@ -199,10 +203,17 @@ class OrdersController extends BaseController
     {
         $userType = Utility::getUserType();
         $col = Order::orderAllowedCol($userType);
-        return Datatable::collection(Order::all($col))
+        return Datatable::collection(Order::all(array_merge($col, array('writer_id'))))
             ->showColumns($col)
             ->addColumn('model', function ($model) {
                 return '<a href="' . URL::route('DetailsOrders', $model->id) . '">Details</a>';
+            })
+            ->addColumn('writer', function ($order) {
+                if ($order->writer_id) {
+                    $writer = Sentry::getUserProvider()->findById($order->writer_id);
+                    return $writer->first_name . ' ' . $writer->last_name;
+                } else
+                    return '';
             })
             ->searchColumns($col)
             ->orderColumns($col)
@@ -278,6 +289,14 @@ class OrdersController extends BaseController
         exit;
     }
 
+    public function documenList($orderId)
+    {
+        $order = Order::find($orderId);
+        $html = View::make('orders.docs_and_discussions', ['order' => $order])->render();
+        echo $html;
+        exit;
+    }
+
     public function deleteInvitaion($orderId, $invitationId)
     {
         $invitationId = Invitation::find($invitationId);
@@ -290,5 +309,84 @@ class OrdersController extends BaseController
         echo $data['success'];
         exit;
 
+    }
+
+    public function uploadDoc($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        $user = Sentry::getUser();
+        $comment = Input::get('comment');
+        $upload = false;
+        $fileName = '';
+        if (Input::hasFile('doc')) {
+            $doc = Input::file('doc');
+            $fileName = time() . '_' . $doc->getClientOriginalName();
+            $file = $doc->move(public_path() . '/upload/', $fileName);
+            $upload = true;
+        }
+        //create document
+        Document::create([
+            'order_id' => $orderId,
+            'user_id' => $user->getId(),
+            'comment' => $comment,
+            'file_name' => $fileName
+        ]);
+
+        //send mail to manager
+        $userName = $user->first_name . ' ' . $user->last_name;
+        $subject = $userName . ' has updated docs and discussion on Order #' . $orderId;
+
+        $emailData = ['subject' => $subject, 'orderId' => $orderId, 'user' => $userName];
+
+        Mail::queue('emails.order_document_uploaded', $emailData, function ($message) use ($emailData) {
+            $message->from(Config::get('syntara::mails.email'), Config::get('syntara::mails.contact'))
+                ->subject($emailData['subject']);
+            $message->to(Config::get('syntara::mails.new-order-manager'));
+        });
+
+        //redirect to details page
+        return Redirect::route('DetailsOrders', ['id' => $orderId])->with('message', 'Successfully submitted');
+    }
+
+    public function processInvitation($orderId)
+    {
+        $order = Order::findOrFail($orderId);
+        $user = Sentry::getUser();
+        $userId = $user->getId();
+        $userType = strtolower(Utility::getUserGroup());
+        $action = Input::get('action');
+
+        $invitation = Invitation::where('order_id', '=', $orderId)->where('user_id', '=', $userId);
+        if ($userType == 'writer')
+            $invitation->where('status', '=', 0);
+
+        $orderField = $userType . '_id';
+        $invitation = $invitation->first();
+
+        $data = [];
+        if ($invitation) {
+            $invitation->status = $action;
+            $invitation->save();
+            //update order table
+            $order->{$orderField} = $userId;
+            $order->status = $action ? 'AC' : 'Rejected';
+            $order->save();
+
+            //Send Email to Manager and Writer
+            $writerName = $user->first_name . ' ' . $user->last_name;
+            $subject = 'Writer' . $writerName . ' has accepted Order #' . $orderId;
+            $emailData = ['subject' => $subject, 'orderId' => $orderId, 'writer' => $writerName];
+            Mail::queue('emails.writer-accept-invitation', $emailData, function ($message) use ($emailData) {
+                $message->from(Config::get('syntara::mails.email'), Config::get('syntara::mails.contact'))
+                    ->subject($emailData['subject']);
+                $message->to(Config::get('syntara::mails.new-order-manager'));
+            });
+
+            $data['success'] = 1;
+        } else
+            $data['success'] = 0;
+
+        return Response::json($data);
+        exit;
     }
 }

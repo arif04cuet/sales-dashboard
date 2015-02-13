@@ -7,12 +7,13 @@ return array(
     'EditOrders' => 'edit-orders',
     'ShowOrders' => 'show-orders',
     'DeleteOrders' => 'delete-orders',
+    'DetailsOrders' => 'details-orders',
 
     'ListProducts' => 'list-products',
     'CreateProducts' => 'create-products',
     'EditProducts' => 'edit-products',
     'ShowProducts' => 'show-products',
-    'DeleteProducts' => 'delete-products',
+    'DeleteProducts' => 'delete-products'
 
-    'DetailsOrders' => 'details-orders'
+
 );

@@ -39,10 +39,11 @@ class Utility
     public static function getUserGroup()
     {
         $groups = Sentry::getUser()->getGroups()->toArray();
-        /* array_map(function ($item) use (&$groups) {
-             $groups[$item['id']] = $item['name'];
-         }, Sentry::getUser()->getGroups()->toArray());*/
-
         return $groups[0]['name'];
+    }
+
+    public static function userIs($userType)
+    {
+        return strtolower(self::getUserGroup()) == strtolower($userType);
     }
 } 

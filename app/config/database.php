@@ -55,9 +55,9 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'sales-dashboard',
-			'username'  => 'root',
-			'password'  => '',
+			'database'  => 'essaypro_sales-dashboard',
+			'username'  => 'essaypro_sales',
+			'password'  => 'MnCl$^;2$h7?',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',
